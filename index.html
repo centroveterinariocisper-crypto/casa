@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Despensa</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#FBF6EE">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Despensa">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,600,100;1,9..144,500,100;1,9..144,600,100&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Despensa · lista de mercado da casa
+   Papel creme, terracota e oliva. Tudo grande, tudo a um toque. */
+:root {
+  --bg: #FBF6EE; --paper: #FFFDF9; --sand: #F3EBDD; --line: #EADFCC; --line-2: #DED1BA;
+  --ink: #2A211A; --muted: #85776A; --faint: #B4A796;
+  --terra: #C65A40; --terra-2: #E07A55; --terra-soft: #FBE7DF;
+  --oliva: #5E7D4A; --oliva-2: #7FA05F; --oliva-soft: #E9F0E0;
+  --mel: #E3A93C; --mel-soft: #FBF0D9;
+  --paulo: #3E6A8A; --paulo-2: #6E9CBB; --luis: #8A5A9E; --luis-2: #B48AC4;
+  --serif: "Fraunces", Georgia, serif; --sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --sh: 0 1px 0 rgba(42,33,26,.04), 0 14px 30px -22px rgba(42,33,26,.38);
+  color-scheme: light;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+html, body { margin: 0; background: var(--bg); }
+body { color: var(--ink); font: 16px/1.45 var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; cursor: pointer; }
+input { font: inherit; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--mel); outline-offset: 2px; }
+.serif { font-family: var(--serif); font-variation-settings: 'SOFT' 100; font-weight: 600; letter-spacing: -.015em; }
+.serif i, em.serif, .it { font-style: italic; }
+
+/* ----- entrada ----- */
+#entrada { position: fixed; inset: 0; z-index: 20; background: var(--bg); overflow-y: auto; display: flex; flex-direction: column; }
+#entrada .miolo { flex: 1; width: 100%; max-width: 380px; margin: 0 auto; padding: max(48px, env(safe-area-inset-top)) 24px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+#entrada .logo { width: 96px; height: 96px; border-radius: 28px; box-shadow: 0 18px 34px -16px rgba(198,90,64,.6); }
+#entrada h1 { margin: 6px 0 0; font-size: 46px; line-height: 1; }
+#entrada h1 em { color: var(--terra); }
+#entrada .sub { margin: -4px 0 6px; color: var(--muted); }
+.pessoas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+.pessoa { display: flex; flex-direction: column; align-items: center; gap: 8px; border: 1.5px solid var(--line); background: var(--paper); border-radius: 22px; padding: 16px 8px 14px; font-weight: 700; box-shadow: var(--sh); transition: transform .15s, border-color .15s; }
+.pessoa .av { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 22px; font-weight: 800; background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.pessoa[aria-pressed="true"] { border-color: var(--c1); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c1) 18%, transparent), var(--sh); transform: translateY(-2px); }
+.campo { position: relative; width: 100%; }
+.campo input, .entrada-input { width: 100%; padding: 15px 18px; font-size: 18px; border-radius: 18px; border: 1.5px solid var(--line-2); background: var(--paper); color: var(--ink); text-align: center; }
+.campo input:focus, .entrada-input:focus { outline: none; border-color: var(--terra); }
+.olho { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border: 0; background: none; color: var(--muted); font-size: 18px; }
+.btn { width: 100%; border: 0; border-radius: 18px; padding: 16px; font-weight: 800; font-size: 17px; color: #fff; background: linear-gradient(135deg, var(--terra-2), var(--terra)); box-shadow: 0 14px 24px -14px var(--terra); }
+.btn:disabled { opacity: .6; }
+.btn.claro { background: var(--sand); color: var(--ink); box-shadow: none; }
+.erro { color: var(--terra); font-size: 14.5px; min-height: 1.3em; margin: 0; }
+.erro:empty { min-height: 0; }
+.nota { color: var(--muted); font-size: 13.5px; margin: 0; }
+.config { width: 100%; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.config label { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px; color: var(--muted); }
+.config label input { text-align: left; font-size: 16px; }
+.config .passo { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--sh); }
+.config .passo b { font-size: 15px; color: var(--ink); }
+.config a { color: var(--terra); font-weight: 700; }
+.ondinha { width: 100%; height: 90px; display: block; }
+
+/* ----- topo ----- */
+.topo { position: sticky; top: 0; z-index: 6; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); padding: calc(env(safe-area-inset-top, 0px) + 10px) max(18px, env(safe-area-inset-right, 0px)) 10px max(18px, env(safe-area-inset-left, 0px)); }
+.topo-in { max-width: 640px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+.topo img { width: 40px; height: 40px; border-radius: 12px; }
+.topo .tit { flex: 1; min-width: 0; }
+.topo h1 { margin: 0; font-size: 24px; line-height: 1.05; }
+.topo h1 em { color: var(--terra); }
+.topo .sinc { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.topo .sinc i { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.topo .sinc.ok i { background: var(--oliva-2); box-shadow: 0 0 0 3px var(--oliva-soft); }
+.eu { display: flex; align-items: center; gap: 8px; border: 0; border-radius: 99px; padding: 5px 12px 5px 5px; background: var(--paper); border: 1px solid var(--line); font-weight: 700; font-size: 14px; }
+.eu .av { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 13px; background: linear-gradient(135deg, var(--c1), var(--c2)); }
+
+/* ----- corpo ----- */
+.wrap { max-width: 640px; margin: 0 auto; padding: 18px max(18px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 120px) max(18px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 18px; }
+.hero { position: relative; overflow: hidden; border-radius: 30px; padding: 22px 22px 26px; color: #fff; background: radial-gradient(120% 120% at 100% 0%, #E9875E 0%, transparent 55%), linear-gradient(150deg, var(--terra), #9E4330); box-shadow: 0 22px 40px -22px rgba(158,67,48,.75); }
+.hero.vazio { background: radial-gradient(120% 120% at 100% 0%, #9DBC7A 0%, transparent 55%), linear-gradient(150deg, var(--oliva), #45603A); box-shadow: 0 22px 40px -22px rgba(69,96,58,.75); }
+.hero > * { position: relative; z-index: 1; }
+.hero .quando { margin: 0; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .8; font-weight: 700; }
+.hero h2 { margin: 6px 0 0; font-size: 34px; line-height: 1.02; }
+.hero p.info { margin: 8px 0 0; opacity: .92; font-size: 15px; max-width: 30ch; }
+.hero .num { position: absolute; right: 18px; bottom: 6px; font-family: var(--serif); font-weight: 600; font-size: 120px; line-height: 1; opacity: .16; z-index: 0; font-variant-numeric: tabular-nums; }
+.hero svg { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 60px; z-index: 0; pointer-events: none; }
+
+.abas { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--sand); border-radius: 18px; padding: 4px; gap: 4px; }
+.abas button { white-space: nowrap; border: 0; background: transparent; border-radius: 14px; padding: 11px 4px; font-weight: 700; font-size: 14.5px; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
+.abas button.on { background: var(--paper); color: var(--ink); box-shadow: 0 4px 12px -6px rgba(42,33,26,.35); }
+.abas .n { background: var(--terra); color: #fff; border-radius: 99px; font-size: 12px; padding: 0 7px; line-height: 19px; min-width: 19px; }
+
+.rot { display: flex; align-items: baseline; justify-content: space-between; margin: 4px 2px -8px; }
+.rot h3 { margin: 0; font-size: 22px; }
+.rot small { color: var(--muted); font-size: 13px; }
+
+.cartao { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--sh); overflow: hidden; }
+.cat { display: flex; align-items: center; gap: 10px; padding: 14px 16px 6px; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.cat .em { font-size: 18px; letter-spacing: 0; }
+
+/* lista de mercado */
+.compra { display: flex; align-items: center; gap: 14px; width: 100%; border: 0; background: none; text-align: left; padding: 13px 16px; position: relative; }
+.compra + .compra::before, .linha + .linha::before { content: ""; position: absolute; left: 62px; right: 16px; top: 0; height: 1px; background: var(--line); }
+.compra .bola { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--line-2); flex: 0 0 auto; display: grid; place-items: center; background: #fff; transition: all .2s; }
+.compra .tx { flex: 1; min-width: 0; }
+.compra .tx b { display: block; font-weight: 700; font-size: 16.5px; overflow-wrap: anywhere; }
+.compra .tx small { display: block; color: var(--muted); font-size: 13px; }
+.compra.feito .bola { background: var(--oliva); border-color: var(--oliva); }
+.compra.feito .bola::after { content: "✓"; color: #fff; font-weight: 800; font-size: 16px; }
+.compra.feito .tx b { text-decoration: line-through; color: var(--muted); }
+
+/* em casa */
+.busca { position: relative; }
+.busca input { width: 100%; padding: 15px 18px 15px 48px; border-radius: 18px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink); font-size: 16px; box-shadow: var(--sh); }
+.busca input:focus { outline: none; border-color: var(--terra); }
+.busca span { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 17px; opacity: .55; }
+.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -18px; padding: 2px 18px; }
+.chips::-webkit-scrollbar { display: none; }
+.chips button { flex: 0 0 auto; border: 1px solid var(--line); background: var(--paper); border-radius: 99px; padding: 8px 14px; font-size: 14px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+.chips button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.linha { display: flex; align-items: center; gap: 12px; padding: 11px 16px; position: relative; }
+.linha .em { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: var(--sand); flex: 0 0 auto; font-size: 18px; }
+.linha .tx { flex: 1; min-width: 0; }
+.linha .tx b { display: block; font-weight: 600; font-size: 16px; overflow-wrap: anywhere; }
+.linha .tx small { display: block; color: var(--muted); font-size: 12.5px; }
+.tog { flex: 0 0 auto; display: inline-flex; background: var(--sand); border-radius: 99px; padding: 3px; gap: 2px; }
+.tog button { border: 0; background: none; border-radius: 99px; padding: 7px 12px; font-size: 13.5px; font-weight: 700; color: var(--muted); }
+.tog button.tem.on { background: var(--oliva); color: #fff; }
+.tog button.falta.on { background: var(--terra); color: #fff; }
+
+/* histórico */
+.hist { display: flex; gap: 12px; padding: 12px 16px; position: relative; align-items: flex-start; }
+.hist + .hist::before { content: ""; position: absolute; left: 16px; right: 16px; top: 0; height: 1px; background: var(--line); }
+.hist .hora { width: 44px; flex: 0 0 auto; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; padding-top: 3px; }
+.hist .av { width: 28px; height: 28px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center; color: #fff; font-size: 12px; font-weight: 800; background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.hist .tx { flex: 1; min-width: 0; font-size: 14.5px; overflow-wrap: anywhere; }
+.hist .tx .tag { display: inline-block; font-size: 11.5px; font-weight: 800; border-radius: 99px; padding: 1px 8px; margin-left: 4px; vertical-align: 1px; }
+.tag.falta { background: var(--terra-soft); color: var(--terra); }
+.tag.tem { background: var(--oliva-soft); color: var(--oliva); }
+.tag.comprou { background: var(--mel-soft); color: #9A6B12; }
+
+.vazio { text-align: center; padding: 30px 20px; color: var(--muted); }
+.vazio .em { font-size: 40px; display: block; margin-bottom: 6px; }
+.vazio b { display: block; color: var(--ink); font-size: 18px; font-family: var(--serif); font-weight: 600; margin-bottom: 2px; }
+
+/* barra de baixo */
+.doca { position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; padding: 12px max(18px, env(safe-area-inset-right, 0px)) calc(14px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px)); background: linear-gradient(180deg, rgba(251,246,238,0), var(--bg) 38%); pointer-events: none; }
+.doca .btn { max-width: 604px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 10px; pointer-events: auto; font-size: 17.5px; }
+.doca .btn .mais { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.25); display: grid; place-items: center; font-size: 20px; line-height: 1; }
+
+/* folhas */
+.fundo { position: fixed; inset: 0; z-index: 30; background: rgba(42,33,26,.42); display: flex; align-items: flex-end; justify-content: center; padding: 12px; padding-bottom: max(12px, env(safe-area-inset-bottom)); animation: aparece .18s ease-out; }
+.folha { width: 100%; max-width: 560px; max-height: calc(100vh - 28px - env(safe-area-inset-top, 0px)); background: var(--paper); border-radius: 30px; box-shadow: 0 24px 48px -16px rgba(42,33,26,.5); display: flex; flex-direction: column; overflow: hidden; animation: sobe .22s ease-out; }
+.folha .cab { display: flex; align-items: center; gap: 10px; padding: 20px 20px 12px; }
+.folha .cab h2 { margin: 0; flex: 1; font-size: 28px; }
+.folha .x { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--sand); color: var(--muted); font-size: 17px; }
+.folha .corpo { overflow-y: auto; padding: 0 20px 16px; -webkit-overflow-scrolling: touch; }
+.folha .corpo .busca input { box-shadow: none; }
+.opc { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: none; text-align: left; padding: 11px 2px; border-top: 1px solid var(--line); }
+.opc:first-of-type { border-top: 0; }
+.opc .em { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: var(--sand); flex: 0 0 auto; font-size: 18px; }
+.opc .tx { flex: 1; min-width: 0; }
+.opc .tx b { display: block; font-weight: 600; }
+.opc .tx small { color: var(--muted); font-size: 12.5px; }
+.opc .acao { font-weight: 800; font-size: 14px; color: var(--terra); }
+.opc:disabled { opacity: .5; }
+.opc:disabled .acao { color: var(--muted); }
+.novo { width: 100%; margin-top: 12px; border: 1.5px dashed var(--terra-2); background: var(--terra-soft); color: var(--terra); border-radius: 16px; padding: 14px; font-weight: 800; }
+.grupo-rot { margin: 16px 0 2px; font-size: 11.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.grupo-rot:first-child { margin-top: 6px; }
+.faltando { margin: 4px 0 6px; background: var(--terra-soft); border-radius: 18px; padding: 12px 14px; }
+.faltando b { font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--terra); }
+.faltando div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.faltando span { background: #fff; border-radius: 99px; padding: 5px 10px; font-size: 13.5px; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 40; background: var(--ink); color: var(--bg); border-radius: 99px; padding: 8px 8px 8px 18px; display: flex; align-items: center; gap: 12px; box-shadow: 0 14px 30px -12px rgba(42,33,26,.6); animation: pop .2s ease-out; white-space: nowrap; font-size: 15px; font-weight: 600; max-width: calc(100% - 32px); }
+.toast span { overflow: hidden; text-overflow: ellipsis; }
+.toast button { border: 0; background: var(--mel); color: var(--ink); border-radius: 99px; padding: 8px 14px; font-weight: 800; font-size: 14px; }
+.toast.sem button { display: none; }
+.toast.sem { padding: 12px 18px; }
+
+.rodape { text-align: center; color: var(--muted); font-size: 12.5px; margin: 0; }
+.link { border: 0; background: none; color: var(--muted); text-decoration: underline; font-size: 14px; align-self: center; padding: 6px; }
+
+@keyframes aparece { from { opacity: 0; } }
+@keyframes sobe { from { transform: translateY(26px); opacity: 0; } }
+@keyframes pop { from { transform: translate(-50%, 14px); opacity: 0; } }
+@media (min-width: 640px) { .fundo { align-items: center; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div id="entrada">
+  <div class="miolo">
+    <img class="logo" src="icon-192.png" alt="">
+    <h1 class="serif">Despensa<em class="it">.</em></h1>
+    <p class="sub">A lista de mercado da nossa casa</p>
+
+    <form id="fEntrar" class="config" style="align-items:center;text-align:center" hidden autocomplete="off">
+      <div class="pessoas" id="pessoas"></div>
+      <div class="campo"><input id="senha" type="password" placeholder="Sua senha" aria-label="Senha" autocapitalize="off" autocorrect="off" spellcheck="false"><button type="button" class="olho" id="olho" aria-label="Mostrar senha">👁</button></div>
+      <button class="btn" id="btEntrar" type="submit">Entrar</button>
+      <p class="erro" id="erroEntrar" role="alert"></p>
+    </form>
+
+    <form id="fConfig" class="config" hidden autocomplete="off">
+      <div class="passo">
+        <b>Primeira vez por aqui</b>
+        <span class="nota">Crie uma senha para cada um. Depois, cada um entra no próprio celular com a sua.</span>
+        <label>Senha do Paulo<input id="cfP" type="password" class="entrada-input" autocomplete="new-password"></label>
+        <label>Senha do Luis<input id="cfL" type="password" class="entrada-input" autocomplete="new-password"></label>
+      </div>
+      <div class="passo">
+        <b>Chave do GitHub</b>
+        <span class="nota">É ela que deixa a lista igual nos dois celulares. Cole só esta vez; ela fica guardada com criptografia.</span>
+        <label>Chave<input id="cfT" type="password" class="entrada-input" placeholder="github_pat_…" autocapitalize="off" autocorrect="off" spellcheck="false"></label>
+      </div>
+      <button class="btn" type="submit" id="btConfig">Criar a Despensa</button>
+      <p class="erro" id="erroConfig" role="alert"></p>
+    </form>
+    <p class="nota" id="carregando">Carregando…</p>
+  </div>
+  <svg class="ondinha" id="ondaEntrada" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true"></svg>
+</div>
+
+<header class="topo" id="topo" hidden>
+  <div class="topo-in">
+    <img src="icon-192.png" alt="">
+    <div class="tit"><h1 class="serif">Despensa<em class="it">.</em></h1><div class="sinc" id="sinc"><i></i><span>conectando</span></div></div>
+    <button class="eu" id="eu" type="button" aria-label="Sair"><span class="av" id="euAv"></span><span id="euNome"></span></button>
+  </div>
+</header>
+
+<main class="wrap" id="app" hidden>
+  <section class="hero" id="hero">
+    <p class="quando" id="quando"></p>
+    <h2 class="serif" id="heroT"></h2>
+    <p class="info" id="heroI"></p>
+    <div class="num" id="heroN"></div>
+    <svg id="ondaHero" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"></svg>
+  </section>
+
+  <nav class="abas" id="abas">
+    <button type="button" data-a="mercado" class="on">🛒 Mercado <span class="n" id="nMercado" hidden></span></button>
+    <button type="button" data-a="casa">🏠 Em casa</button>
+    <button type="button" data-a="hist">🕓 Histórico</button>
+  </nav>
+
+  <section id="vMercado"></section>
+  <section id="vCasa" hidden style="display:flex;flex-direction:column;gap:14px">
+    <div class="busca"><span>🔎</span><input id="busca" type="search" placeholder="Procurar em casa" aria-label="Procurar"></div>
+    <div class="chips" id="chips"></div>
+    <div id="listaCasa" style="display:flex;flex-direction:column;gap:14px"></div>
+  </section>
+  <section id="vHist" hidden></section>
+  <p class="rodape" id="rodape"></p>
+</main>
+
+<div class="doca" id="doca" hidden><button class="btn" id="btAdd" type="button"><span class="mais">+</span>Acabou alguma coisa?</button></div>
+
+<div class="fundo" id="fAdd" hidden role="dialog" aria-modal="true" aria-labelledby="tAdd">
+  <div class="folha">
+    <div class="cab"><h2 class="serif" id="tAdd">O que <em class="it" style="color:var(--terra)">acabou?</em></h2><button class="x" type="button" data-fecha aria-label="Fechar">✕</button></div>
+    <div class="corpo">
+      <div class="busca"><span>🔎</span><input id="buscaAdd" type="search" placeholder="Ex.: leite, café, detergente" aria-label="Procurar item" autocomplete="off"></div>
+      <div id="opcoes"></div>
+    </div>
+  </div>
+</div>
+
+<div class="fundo" id="fSair" hidden role="dialog" aria-modal="true">
+  <div class="folha" style="padding:22px 20px 18px;gap:12px;text-align:center">
+    <h2 class="serif" style="margin:0;font-size:26px">Sair da Despensa?</h2>
+    <p class="nota" style="font-size:15px">Para entrar de novo, vai precisar da senha.</p>
+    <button class="btn" type="button" id="btSairSim">Sair</button>
+    <button class="btn claro" type="button" data-fecha>Cancelar</button>
+  </div>
+</div>
+
+<script>
+// ===== configuração
+const REPO = 'centroveterinariocisper-crypto/casa';
+const API = 'https://api.github.com/repos/' + REPO + '/contents/';
+const GENTE = { paulo: { nome: 'Paulo', c1: 'var(--paulo)', c2: 'var(--paulo-2)' }, luis: { nome: 'Luis', c1: 'var(--luis)', c2: 'var(--luis-2)' } };
+const CATS = [
+  ['Hortifrúti', '🥦'], ['Padaria', '🍞'], ['Frios e laticínios', '🧀'], ['Carnes e ovos', '🥩'], ['Mercearia', '🥫'], ['Matinais', '☕'],
+  ['Temperos e molhos', '🧂'], ['Bebidas', '🧃'], ['Congelados', '🧊'], ['Doces e lanches', '🍫'], ['Limpeza', '🧽'], ['Higiene', '🧴'], ['Pet', '🐾'], ['Outros', '🛍️']
+];
+const EMO = Object.fromEntries(CATS);
+const BASE = {
+  'Hortifrúti': ['Alface', 'Tomate', 'Cebola', 'Alho', 'Batata', 'Cenoura', 'Banana', 'Maçã', 'Limão', 'Laranja', 'Mamão', 'Abacate', 'Brócolis', 'Abobrinha', 'Pepino', 'Cheiro-verde', 'Ovos caipira'],
+  'Padaria': ['Pão francês', 'Pão de forma', 'Torrada', 'Bolo'],
+  'Frios e laticínios': ['Leite', 'Iogurte', 'Queijo muçarela', 'Queijo minas', 'Presunto', 'Peito de peru', 'Requeijão', 'Manteiga', 'Creme de leite', 'Leite condensado'],
+  'Carnes e ovos': ['Ovos', 'Frango', 'Carne moída', 'Bife', 'Linguiça', 'Peixe', 'Bacon'],
+  'Mercearia': ['Arroz', 'Feijão', 'Macarrão', 'Farofa', 'Farinha de trigo', 'Açúcar', 'Sal', 'Óleo', 'Azeite', 'Molho de tomate', 'Milho em lata', 'Atum', 'Grão-de-bico', 'Aveia'],
+  'Matinais': ['Café', 'Filtro de café', 'Achocolatado', 'Granola', 'Cereal', 'Mel', 'Geleia', 'Chá'],
+  'Temperos e molhos': ['Pimenta-do-reino', 'Orégano', 'Caldo de galinha', 'Shoyu', 'Maionese', 'Ketchup', 'Mostarda', 'Vinagre', 'Páprica'],
+  'Bebidas': ['Água', 'Água com gás', 'Suco', 'Refrigerante', 'Cerveja', 'Vinho', 'Água de coco'],
+  'Congelados': ['Pão de queijo', 'Lasanha', 'Pizza', 'Sorvete', 'Batata congelada', 'Polpa de fruta'],
+  'Doces e lanches': ['Biscoito', 'Bolacha recheada', 'Chocolate', 'Pipoca', 'Castanhas', 'Barra de cereal'],
+  'Limpeza': ['Detergente', 'Sabão em pó', 'Amaciante', 'Água sanitária', 'Desinfetante', 'Multiuso', 'Esponja', 'Saco de lixo', 'Papel toalha', 'Álcool', 'Limpa-vidros', 'Pano de chão'],
+  'Higiene': ['Papel higiênico', 'Sabonete', 'Shampoo', 'Condicionador', 'Pasta de dente', 'Escova de dente', 'Fio dental', 'Desodorante', 'Lâmina de barbear', 'Algodão', 'Cotonete', 'Protetor solar'],
+  'Pet': ['Ração', 'Petisco', 'Tapete higiênico', 'Areia'],
+};
+const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const CAT = []; for (const [c, its] of Object.entries(BASE)) for (const n of its) CAT.push({ id: slug(c + '-' + n), n, c });
+const CATI = Object.fromEntries(CAT.map((x) => [x.id, x]));
+
+// ===== utilidades
+const $ = (id) => document.getElementById(id);
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const ls = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
+const hora = (t) => new Date(t).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const pB64 = (buf) => { let s = ''; const u = new Uint8Array(buf); for (let i = 0; i < u.length; i += 8192) s += String.fromCharCode.apply(null, u.subarray(i, i + 8192)); return btoa(s); };
+const utf8b64 = (str) => pB64(new TextEncoder().encode(str));
+function ondas(svg, linhas, alt, cor, op) {
+  let h = '';
+  for (let j = 0; j < linhas; j++) {
+    const t = j / Math.max(1, linhas - 1), y0 = alt * (0.25 + 0.7 * t), amp = 3 + 6 * t, ph = j * 0.4;
+    let d = ''; for (let x = 0; x <= 400; x += 10) { const y = y0 + amp * Math.sin(x / 90 + ph) + amp * 0.35 * Math.sin(x / 37 + ph * 1.6); d += (x ? 'L' : 'M') + x + ' ' + y.toFixed(1); }
+    h += `<path d="${d}" fill="none" stroke="${cor}" stroke-opacity="${(op * (0.35 + 0.65 * t)).toFixed(2)}" stroke-width="${(0.8 + 0.9 * t).toFixed(2)}" vector-effect="non-scaling-stroke"/>`;
+  }
+  svg.innerHTML = h;
+}
+
+// ===== criptografia (a senha de cada um abre a chave da casa)
+const ITER = 150000;
+async function chaveSenha(senha, salt, uso) { const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveKey']); return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, [uso]); }
+async function aes(kb64, uso) { return crypto.subtle.importKey('raw', b64(kb64), 'AES-GCM', false, [uso]); }
+async function cifrar(kb64, obj) { const iv = crypto.getRandomValues(new Uint8Array(12)); const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aes(kb64, 'encrypt'), new TextEncoder().encode(JSON.stringify(obj))); return { iv: pB64(iv), ct: pB64(ct) }; }
+async function decifrar(kb64, o) { const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(o.iv) }, await aes(kb64, 'decrypt'), b64(o.ct)); return JSON.parse(new TextDecoder().decode(pt)); }
+async function abrirCofre(cofre, senha) {
+  for (const v of cofre.vagas) {
+    try { const k = await chaveSenha(senha, b64(v.salt), 'decrypt'); const o = JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(v.iv) }, k, b64(v.ct)))); return o; } catch (e) {}
+  }
+  throw new Error('senha');
+}
+async function vaga(senha, conteudo) { const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12)); const k = await chaveSenha(senha, salt, 'encrypt'); const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, k, new TextEncoder().encode(JSON.stringify(conteudo))); return { salt: pB64(salt), iv: pB64(iv), ct: pB64(ct) }; }
+
+// ===== estado
+let EU = '', K = '', TOK = '';
+let meu = {}, log = [];            // o que este celular marcou: id -> [falta 0/1, ts, nome?, cat?]
+let rem = {}, histRem = [];        // de todos, vindos do GitHub
+let aba = ls.get('desp-aba', 'mercado'), catSel = '', ultSinc = 0, erroSinc = '';
+const hdr = (raw) => ({ Authorization: 'Bearer ' + TOK, Accept: raw ? 'application/vnd.github.raw' : 'application/vnd.github+json' });
+function carregarMeu() { try { meu = JSON.parse(ls.get('desp-meu-' + EU, '{}')) || {}; } catch (e) { meu = {}; } try { log = JSON.parse(ls.get('desp-log-' + EU, '[]')) || []; } catch (e) { log = []; } }
+function salvarMeu() { ls.set('desp-meu-' + EU, JSON.stringify(meu)); ls.set('desp-log-' + EU, JSON.stringify(log)); }
+function estado() {
+  const out = {};
+  for (const [id, v] of Object.entries(rem)) out[id] = v;
+  for (const [id, a] of Object.entries(meu)) if (!out[id] || a[1] >= out[id].t) out[id] = { f: a[0], t: a[1], por: EU, n: a[2] || (out[id] && out[id].n), c: a[3] || (out[id] && out[id].c) };
+  return out;
+}
+const info = (id, v) => ({ n: (CATI[id] && CATI[id].n) || (v && v.n) || id, c: (CATI[id] && CATI[id].c) || (v && v.c) || 'Outros' });
+function todos() {
+  const e = estado(), out = CAT.map((x) => ({ ...x, f: e[x.id] ? e[x.id].f : 0, t: e[x.id] && e[x.id].t, por: e[x.id] && e[x.id].por }));
+  for (const [id, v] of Object.entries(e)) if (!CATI[id] && v.n) out.push({ id, n: v.n, c: v.c || 'Outros', f: v.f, t: v.t, por: v.por });
+  return out;
+}
+const faltando = () => todos().filter((x) => x.f).sort((a, b) => ordemCat(a.c) - ordemCat(b.c) || a.n.localeCompare(b.n, 'pt'));
+const ordemCat = (c) => { const i = CATS.findIndex(([x]) => x === c); return i < 0 ? 99 : i; };
+
+// ===== marcar (com desfazer)
+function marcar(id, falta, extra) {
+  const v = estado()[id], inf = info(id, extra || v);
+  const ant = meu[id] ? meu[id].slice() : null, antLog = log.length;
+  const a = [falta ? 1 : 0, Date.now()]; if (!CATI[id]) a.push(inf.n, inf.c);
+  meu[id] = a; log.push({ i: id, f: a[0], t: a[1], n: inf.n }); if (log.length > 600) log = log.slice(-600);
+  salvarMeu(); render(); enviarDepois();
+  return () => { if (ant) meu[id] = ant; else delete meu[id]; log.length = Math.min(log.length, antLog); salvarMeu(); render(); enviarDepois(); };
+}
+let tToast = null;
+function toast(txt, desfazer) {
+  document.querySelectorAll('.toast').forEach((x) => x.remove()); clearTimeout(tToast);
+  const t = el('div', 'toast' + (desfazer ? '' : ' sem')); t.appendChild(el('span', null, txt));
+  const b = el('button', null, 'Desfazer'); b.type = 'button'; b.onclick = () => { desfazer && desfazer(); t.remove(); toast('Desfeito'); }; t.appendChild(b);
+  document.body.appendChild(t); tToast = setTimeout(() => t.remove(), desfazer ? 5000 : 1800);
+}
+
+// ===== sincronização
+async function puxar() {
+  if (!TOK || !K) return;
+  const novo = {}, hist = [];
+  try {
+    for (const p of Object.keys(GENTE)) {
+      const r = await fetch(API + 'dados-' + p + '.json?t=' + Date.now(), { headers: hdr(true), cache: 'no-store' });
+      if (r.status === 404) continue;
+      if (r.status === 401 || r.status === 403) throw new Error('chave');
+      if (!r.ok) throw new Error('rede');
+      let o; try { o = await decifrar(K, await r.json()); } catch (e) { continue; }
+      for (const [id, a] of Object.entries(o.e || {})) if (!novo[id] || a[1] > novo[id].t) novo[id] = { f: a[0], t: a[1], por: p, n: a[2], c: a[3] };
+      for (const x of o.h || []) hist.push({ ...x, por: p });
+    }
+    rem = novo; histRem = hist; ultSinc = Date.now(); erroSinc = '';
+  } catch (e) { erroSinc = e.message; }
+  render();
+}
+let tEnv = null;
+function enviarDepois() { clearTimeout(tEnv); tEnv = setTimeout(enviar, 700); }
+async function enviar(tent) {
+  if (!TOK || !K) return;
+  try {
+    const url = API + 'dados-' + EU + '.json';
+    let sha; const g = await fetch(url + '?t=' + Date.now(), { headers: hdr(), cache: 'no-store' }); if (g.ok) sha = (await g.json()).sha;
+    const corpo = JSON.stringify(await cifrar(K, { e: meu, h: log }));
+    const r = await fetch(url, { method: 'PUT', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'despensa ' + EU, content: utf8b64(corpo), sha }) });
+    if (r.status === 409 && !tent) return enviar(1);
+    if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? 'chave' : 'rede');
+    ultSinc = Date.now(); erroSinc = '';
+  } catch (e) { erroSinc = e.message === 'chave' ? 'chave' : 'envio'; }
+  render();
+}
+
+// ===== desenho
+function render() {
+  if (!EU) return;
+  const P = GENTE[EU];
+  $('euAv').textContent = P.nome[0]; $('euNome').textContent = P.nome; $('eu').style.setProperty('--c1', P.c1); $('eu').style.setProperty('--c2', P.c2);
+  const s = $('sinc');
+  s.classList.toggle('ok', !erroSinc && !!ultSinc);
+  s.querySelector('span').textContent = erroSinc === 'chave' ? 'chave do GitHub recusada' : erroSinc ? 'sem internet, salvo aqui' : ultSinc ? 'em dia · ' + hora(ultSinc) : 'conectando';
+  const fal = faltando(), n = fal.length;
+  const h = $('hero'); h.classList.toggle('vazio', !n);
+  $('quando').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+  $('heroT').textContent = n ? (n === 1 ? 'Falta 1 coisa' : `Faltam ${n} coisas`) : 'Casa abastecida';
+  $('heroI').textContent = n ? 'No mercado, toque no item quando colocar no carrinho.' : 'Quando algo acabar, é só avisar no botão lá embaixo.';
+  $('heroN').textContent = n || '✓';
+  ondas($('ondaHero'), 7, 60, '#ffffff', 0.5);
+  const nb = $('nMercado'); nb.hidden = !n; nb.textContent = n;
+  document.querySelectorAll('#abas button').forEach((b) => b.classList.toggle('on', b.dataset.a === aba));
+  $('vMercado').hidden = aba !== 'mercado'; $('vCasa').hidden = aba !== 'casa'; $('vHist').hidden = aba !== 'hist';
+  if (aba === 'mercado') desenharMercado(fal); else if (aba === 'casa') desenharCasa(); else desenharHist();
+  $('rodape').textContent = 'Paulo e Luis · a lista é a mesma nos dois celulares';
+}
+function porQuem(x) { return x.por ? (GENTE[x.por] ? GENTE[x.por].nome : '') + ' · ' + quando(x.t) : ''; }
+function quando(t) { if (!t) return ''; const d = new Date(t), h = new Date(), o = new Date(); o.setDate(h.getDate() - 1); return (d.toDateString() === h.toDateString() ? 'hoje ' : d.toDateString() === o.toDateString() ? 'ontem ' : d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' ') + hora(t); }
+function desenharMercado(fal) {
+  const V = $('vMercado'); V.replaceChildren();
+  if (!fal.length) { const c = el('div', 'cartao'); const v = el('div', 'vazio'); v.appendChild(el('span', 'em', '🧺')); v.appendChild(el('b', null, 'Nada para comprar')); v.appendChild(document.createTextNode('A lista de mercado está vazia.')); c.appendChild(v); V.appendChild(c); return; }
+  const by = {}; for (const x of fal) (by[x.c] = by[x.c] || []).push(x);
+  const box = el('div', null); box.style.cssText = 'display:flex;flex-direction:column;gap:14px';
+  for (const c of Object.keys(by)) {
+    const card = el('div', 'cartao'); const cab = el('div', 'cat'); cab.appendChild(el('span', 'em', EMO[c] || '🛍️')); cab.appendChild(document.createTextNode(c)); card.appendChild(cab);
+    for (const x of by[c]) {
+      const b = el('button', 'compra'); b.type = 'button';
+      b.appendChild(el('span', 'bola')); const tx = el('span', 'tx'); tx.appendChild(el('b', null, x.n)); tx.appendChild(el('small', null, 'acabou · ' + porQuem(x))); b.appendChild(tx);
+      b.onclick = () => { b.classList.add('feito'); setTimeout(() => { const u = marcar(x.id, 0); toast(x.n + ' no carrinho', u); }, 260); };
+      card.appendChild(b);
+    }
+    box.appendChild(card);
+  }
+  V.appendChild(box);
+}
+function desenharCasa() {
+  const q = norm($('busca').value.trim());
+  const ch = $('chips'); ch.replaceChildren();
+  const add = (id, txt) => { const b = el('button', catSel === id ? 'on' : '', txt); b.type = 'button'; b.onclick = () => { catSel = catSel === id ? '' : id; desenharCasa(); }; ch.appendChild(b); };
+  add('', 'Tudo'); add('__falta', '🔴 Acabou'); for (const [c, e] of CATS) if (todos().some((x) => x.c === c)) add(c, e + ' ' + c);
+  const L = $('listaCasa'); L.replaceChildren();
+  const lista = todos().filter((x) => (!q || norm(x.n).includes(q)) && (!catSel || (catSel === '__falta' ? x.f : x.c === catSel)));
+  if (!lista.length) { const c = el('div', 'cartao'); const v = el('div', 'vazio'); v.appendChild(el('b', null, 'Nada encontrado')); v.appendChild(document.createTextNode('Toque em "Acabou alguma coisa?" para criar um item novo.')); c.appendChild(v); L.appendChild(c); return; }
+  const by = {}; for (const x of lista) (by[x.c] = by[x.c] || []).push(x);
+  for (const c of Object.keys(by).sort((a, b) => ordemCat(a) - ordemCat(b))) {
+    const card = el('div', 'cartao'); const cab = el('div', 'cat'); cab.appendChild(el('span', 'em', EMO[c] || '🛍️')); cab.appendChild(document.createTextNode(c)); card.appendChild(cab);
+    for (const x of by[c].sort((a, b) => a.n.localeCompare(b.n, 'pt'))) {
+      const r = el('div', 'linha'); const tx = el('div', 'tx'); tx.appendChild(el('b', null, x.n)); if (x.t) tx.appendChild(el('small', null, (x.f ? 'acabou · ' : 'tem · ') + porQuem(x))); r.appendChild(tx);
+      const tg = el('div', 'tog'); const bt = el('button', 'tem' + (x.f ? '' : ' on'), 'Tem'), bf = el('button', 'falta' + (x.f ? ' on' : ''), 'Acabou'); bt.type = bf.type = 'button';
+      bt.onclick = () => { if (!x.f) return; const u = marcar(x.id, 0); toast(x.n + ': tem em casa', u); };
+      bf.onclick = () => { if (x.f) return; const u = marcar(x.id, 1); toast(x.n + ' foi para a lista', u); };
+      tg.append(bt, bf); r.appendChild(tg); card.appendChild(r);
+    }
+    L.appendChild(card);
+  }
+}
+function desenharHist() {
+  const V = $('vHist'); V.replaceChildren();
+  const vistos = new Set(), hs = [];
+  for (const x of histRem.concat(log.map((y) => ({ ...y, por: EU })))) { const k = x.por + x.t + x.i + x.f; if (!vistos.has(k)) { vistos.add(k); hs.push(x); } }
+  hs.sort((a, b) => b.t - a.t);
+  const card = el('div', 'cartao');
+  if (!hs.length) { const v = el('div', 'vazio'); v.appendChild(el('span', 'em', '🕓')); v.appendChild(el('b', null, 'Nada ainda')); v.appendChild(document.createTextNode('Tudo o que vocês marcarem aparece aqui.')); card.appendChild(v); V.appendChild(card); return; }
+  let dia = '';
+  for (const x of hs.slice(0, 300)) {
+    const d = new Date(x.t), hj = new Date(), on = new Date(); on.setDate(hj.getDate() - 1);
+    const rot = d.toDateString() === hj.toDateString() ? 'Hoje' : d.toDateString() === on.toDateString() ? 'Ontem' : d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    if (rot !== dia) { const c = el('div', 'cat', rot); card.appendChild(c); dia = rot; }
+    const G = GENTE[x.por] || { nome: '?', c1: '#999', c2: '#bbb' };
+    const r = el('div', 'hist'); r.appendChild(el('span', 'hora', hora(x.t)));
+    const av = el('span', 'av', G.nome[0]); av.style.setProperty('--c1', G.c1); av.style.setProperty('--c2', G.c2); r.appendChild(av);
+    const tx = el('div', 'tx'); tx.appendChild(el('b', null, G.nome + ' ')); tx.appendChild(document.createTextNode(x.f ? 'marcou que acabou ' : 'marcou que tem ')); tx.appendChild(el('b', null, x.n || x.i));
+    tx.appendChild(el('span', 'tag ' + (x.f ? 'falta' : 'comprou'), x.f ? 'acabou' : 'tem'));
+    r.appendChild(tx); card.appendChild(r);
+  }
+  V.appendChild(card);
+}
+
+// ===== folha "o que acabou?"
+function desenharOpcoes() {
+  const q = norm($('buscaAdd').value.trim()), O = $('opcoes'); O.replaceChildren();
+  const fal = faltando();
+  if (fal.length && !q) { const f = el('div', 'faltando'); f.appendChild(el('b', null, `Já na lista (${fal.length})`)); const d = el('div'); for (const x of fal) d.appendChild(el('span', null, x.n)); f.appendChild(d); O.appendChild(f); }
+  const nota = (x) => { const n = norm(x.n); return n.startsWith(q) ? 0 : n.split(/[\s-]+/).some((w) => w.startsWith(q)) ? 1 : 2; };
+  const lista = todos().filter((x) => !q || norm(x.n).includes(q) || norm(x.c).includes(q))
+    .sort((a, b) => q ? (nota(a) - nota(b) || a.n.localeCompare(b.n, 'pt')) : (ordemCat(a.c) - ordemCat(b.c) || a.n.localeCompare(b.n, 'pt')));
+  let ult = '';
+  for (const x of lista) {
+    if (!q && x.c !== ult) { O.appendChild(el('div', 'grupo-rot', (EMO[x.c] || '') + ' ' + x.c)); ult = x.c; }
+    const b = el('button', 'opc'); b.type = 'button'; b.disabled = !!x.f;
+    const tx = el('span', 'tx'); tx.appendChild(el('b', null, x.n)); if (q) tx.appendChild(el('small', null, x.c)); b.appendChild(tx); b.appendChild(el('span', 'acao', x.f ? 'na lista' : '+ Acabou'));
+    b.onclick = () => { const u = marcar(x.id, 1); toast(x.n + ' foi para a lista', u); $('buscaAdd').value = ''; desenharOpcoes(); };
+    O.appendChild(b);
+  }
+  const txt = $('buscaAdd').value.trim();
+  if (txt.length >= 2 && !lista.some((x) => norm(x.n) === q)) {
+    const nb = el('button', 'novo', `+ Criar "${txt}" e pôr na lista`); nb.type = 'button';
+    nb.onclick = () => { const n = txt.charAt(0).toUpperCase() + txt.slice(1); const id = 'x-' + slug(n); const u = marcar(id, 1, { n, c: 'Outros' }); toast(n + ' foi para a lista', u); $('buscaAdd').value = ''; desenharOpcoes(); };
+    O.appendChild(nb);
+  }
+}
+const abrir = (id) => { $(id).hidden = false; document.body.style.overflow = 'hidden'; };
+const fechar = () => { document.querySelectorAll('.fundo').forEach((f) => { f.hidden = true; }); document.body.style.overflow = ''; };
+$('btAdd').onclick = () => { $('buscaAdd').value = ''; desenharOpcoes(); abrir('fAdd'); setTimeout(() => $('buscaAdd').focus(), 80); };
+$('buscaAdd').addEventListener('input', desenharOpcoes);
+document.querySelectorAll('.fundo').forEach((f) => f.addEventListener('click', (e) => { if (e.target === f || e.target.closest('[data-fecha]')) fechar(); }));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(); });
+document.querySelectorAll('#abas button').forEach((b) => b.addEventListener('click', () => { aba = b.dataset.a; ls.set('desp-aba', aba); if (aba === 'hist') puxar(); render(); window.scrollTo(0, 0); }));
+$('busca').addEventListener('input', desenharCasa);
+$('eu').onclick = () => abrir('fSair');
+$('btSairSim').onclick = () => { ls.del('desp-sessao'); EU = ''; K = ''; TOK = ''; rem = {}; histRem = []; fechar(); mostrarEntrada(); };
+
+// ===== entrada
+let COFRE = null, escolhido = '';
+async function baixarCofre() {
+  try { const r = await fetch('casa.json?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) return await r.json(); if (r.status === 404) { const g = await fetch(API + 'casa.json?t=' + Date.now(), { headers: { Accept: 'application/vnd.github.raw' }, cache: 'no-store' }); if (g.ok) return await g.json(); return null; } } catch (e) {}
+  try { return JSON.parse(ls.get('desp-cofre', 'null')); } catch (e) { return null; }
+}
+function entrarApp(eu, k, tok) {
+  EU = eu; K = k; TOK = tok; carregarMeu();
+  $('entrada').hidden = true; $('topo').hidden = false; $('app').hidden = false; $('doca').hidden = false;
+  render(); puxar();
+}
+async function mostrarEntrada() {
+  $('entrada').hidden = false; $('topo').hidden = true; $('app').hidden = true; $('doca').hidden = true;
+  $('carregando').hidden = false; $('fEntrar').hidden = true; $('fConfig').hidden = true;
+  COFRE = await baixarCofre(); $('carregando').hidden = true;
+  if (!COFRE) { $('fConfig').hidden = false; return; }
+  ls.set('desp-cofre', JSON.stringify(COFRE));
+  const P = $('pessoas'); P.replaceChildren();
+  for (const [id, g] of Object.entries(GENTE)) { const b = el('button', 'pessoa'); b.type = 'button'; b.style.setProperty('--c1', g.c1); b.style.setProperty('--c2', g.c2); b.setAttribute('aria-pressed', id === escolhido ? 'true' : 'false'); b.appendChild(el('span', 'av', g.nome[0])); b.appendChild(document.createTextNode(g.nome)); b.onclick = () => { escolhido = id; mostrarPessoas(); $('senha').focus(); }; P.appendChild(b); }
+  $('fEntrar').hidden = false;
+}
+function mostrarPessoas() { document.querySelectorAll('#pessoas .pessoa').forEach((b, i) => b.setAttribute('aria-pressed', Object.keys(GENTE)[i] === escolhido ? 'true' : 'false')); $('senha').placeholder = escolhido ? 'Senha do ' + GENTE[escolhido].nome : 'Sua senha'; }
+$('olho').onclick = () => { const i = $('senha'); i.type = i.type === 'password' ? 'text' : 'password'; };
+$('fEntrar').addEventListener('submit', async (e) => {
+  e.preventDefault(); const s = $('senha').value; if (!s) return;
+  const bt = $('btEntrar'); bt.disabled = true; bt.textContent = 'Abrindo…'; $('erroEntrar').textContent = '';
+  try {
+    const o = await abrirCofre(COFRE, s);
+    if (escolhido && o.quem !== escolhido) throw new Error('senha');
+    const tok = await decifrar(o.k, COFRE.tok);
+    ls.set('desp-sessao', JSON.stringify({ eu: o.quem, k: o.k })); $('senha').value = '';
+    entrarApp(o.quem, o.k, tok.t);
+  } catch (err) { $('erroEntrar').textContent = escolhido ? 'Senha errada. Confira e tente de novo.' : 'Senha errada. Toque no seu nome e tente de novo.'; }
+  bt.disabled = false; bt.textContent = 'Entrar';
+});
+$('fConfig').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const sp = $('cfP').value, sl = $('cfL').value, tk = $('cfT').value.trim(), er = $('erroConfig');
+  if (sp.length < 4 || sl.length < 4) { er.textContent = 'Use senhas com pelo menos 4 caracteres.'; return; }
+  if (sp === sl) { er.textContent = 'As duas senhas precisam ser diferentes.'; return; }
+  if (!tk) { er.textContent = 'Cole a chave do GitHub.'; return; }
+  const bt = $('btConfig'); bt.disabled = true; bt.textContent = 'Criando…'; er.textContent = '';
+  try {
+    const k = pB64(crypto.getRandomValues(new Uint8Array(32)));
+    const cofre = { v: 1, vagas: [await vaga(sp, { quem: 'paulo', k }), await vaga(sl, { quem: 'luis', k })], tok: await cifrar(k, { t: tk }) };
+    TOK = tk;
+    const r = await fetch(API + 'casa.json', { method: 'PUT', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'Despensa criada', content: utf8b64(JSON.stringify(cofre)) }) });
+    if (r.status === 401 || r.status === 403 || r.status === 404) throw new Error('chave');
+    if (r.status === 422) throw new Error('existe');
+    if (!r.ok) throw new Error('rede');
+    ls.set('desp-cofre', JSON.stringify(cofre)); COFRE = cofre;
+    const meuEu = 'paulo'; ls.set('desp-sessao', JSON.stringify({ eu: meuEu, k }));
+    $('cfP').value = $('cfL').value = $('cfT').value = '';
+    entrarApp(meuEu, k, tk); toast('Despensa criada! Bem-vindo, Paulo.');
+  } catch (err) {
+    er.textContent = err.message === 'chave' ? 'O GitHub recusou a chave. Confira se ela tem acesso ao repositório "casa" com permissão de escrita.' : err.message === 'existe' ? 'A Despensa já foi criada. Recarregue a página e entre com a sua senha.' : 'Não consegui salvar. Confira a internet e tente de novo.';
+  }
+  bt.disabled = false; bt.textContent = 'Criar a Despensa';
+});
+
+// ===== início
+ondas($('ondaEntrada'), 12, 90, '#C65A40', 0.45);
+(async () => {
+  let sess = null; try { sess = JSON.parse(ls.get('desp-sessao', 'null')); } catch (e) {}
+  if (sess && sess.eu && sess.k) {
+    COFRE = await baixarCofre();
+    if (COFRE) { try { const tok = await decifrar(sess.k, COFRE.tok); ls.set('desp-cofre', JSON.stringify(COFRE)); entrarApp(sess.eu, sess.k, tok.t); return; } catch (e) { ls.del('desp-sessao'); } }
+  }
+  mostrarEntrada();
+})();
+setInterval(() => { if (EU && document.visibilityState === 'visible') puxar(); }, 15000);
+document.addEventListener('visibilitychange', () => { if (EU && document.visibilityState === 'visible') puxar(); });
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
