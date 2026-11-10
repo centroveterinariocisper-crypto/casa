@@ -341,21 +341,72 @@ body { background: var(--bg); }
 .toast { bottom: calc(150px + env(safe-area-inset-bottom, 0px)); }
 .rodape { margin-bottom: 10px; }
 @media (min-width: 700px) { #abas { left: 50%; right: auto; transform: translateX(-50%); bottom: 14px; width: 460px; border-radius: 22px; } }
+
+/* ===================== ENTRADA moderna ===================== */
+#entrada { background: linear-gradient(165deg, #FF9A3D 0%, #FF5A2E 38%, #FF3D7F 78%, #C13CFF 120%); overflow-x: hidden; }
+#entrada .ondinha { display: none; }
+#entrada .bolhas i { position: absolute; border-radius: 50%; filter: blur(2px); opacity: .35; pointer-events: none; }
+#entrada .bolhas i:nth-child(1) { width: 260px; height: 260px; background: radial-gradient(circle at 30% 30%, #FFE08A, transparent 65%); top: -80px; right: -60px; }
+#entrada .bolhas i:nth-child(2) { width: 220px; height: 220px; background: radial-gradient(circle at 50% 50%, #FFFFFF, transparent 65%); top: 140px; left: -110px; opacity: .18; }
+#entrada .bolhas i:nth-child(3) { width: 300px; height: 300px; background: radial-gradient(circle at 50% 50%, #8B5CF6, transparent 65%); bottom: -120px; right: -120px; opacity: .3; }
+#entrada .miolo { position: relative; z-index: 1; justify-content: flex-start; gap: 22px; padding-top: max(54px, calc(env(safe-area-inset-top) + 26px)); max-width: 420px; }
+#entrada .marca { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #fff; }
+#entrada .logo { width: 88px; height: 88px; border-radius: 26px; box-shadow: 0 18px 36px -14px rgba(80,0,40,.55), 0 0 0 6px rgba(255,255,255,.18); }
+#entrada h1 { margin: 4px 0 0; font-family: var(--sans); font-weight: 800; font-size: 44px; letter-spacing: -.04em; color: #fff; line-height: 1; }
+#entrada h1 span { color: #FFE08A; }
+#entrada .sub { margin: 0; color: rgba(255,255,255,.88); font-weight: 600; font-size: 15px; }
+#entrada .config { background: rgba(255,255,255,.97); border-radius: 30px; padding: 22px 18px 18px; box-shadow: 0 30px 60px -24px rgba(60,0,40,.55); gap: 14px; }
+#entrada .config .passo { box-shadow: none; background: var(--sand); border: 0; }
+#entrada .quem { margin: 0; font-weight: 800; font-size: 17px; color: var(--ink); letter-spacing: -.01em; }
+#entrada .pessoas { gap: 14px; }
+#entrada .pessoa { border: 0; background: var(--sand); box-shadow: none; padding: 14px 8px 12px; font-size: 15.5px; border-radius: 22px; position: relative; }
+#entrada .pessoa .av { width: 58px; height: 58px; font-size: 24px; box-shadow: 0 10px 18px -10px var(--c1); }
+#entrada .pessoa[aria-pressed="true"] { background: #fff; box-shadow: 0 0 0 2.5px var(--c1), 0 14px 26px -14px var(--c1); transform: translateY(-2px); }
+#entrada .pessoa[aria-pressed="true"]::after { content: "✓"; position: absolute; top: 8px; right: 10px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; color: #fff; background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.pin { display: flex; justify-content: center; gap: 12px; min-height: 20px; margin-top: 2px; }
+.pin i { width: 15px; height: 15px; border-radius: 50%; background: var(--line-2); transition: transform .15s, background .15s; }
+.pin i.on { background: linear-gradient(135deg, var(--terra-2), var(--rosa)); transform: scale(1.12); }
+.pin.erro { animation: treme .38s; }
+.pin.erro i { background: #FECACA; }
+@keyframes treme { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+.teclado { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+.teclado button { height: 58px; border: 0; border-radius: 18px; background: var(--sand); font-size: 24px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; transition: transform .08s, background .15s; }
+.teclado button:active { transform: scale(.94); background: var(--line-2); }
+.teclado button.fn { font-size: 14px; font-weight: 700; color: var(--muted); background: transparent; }
+#entrada .erro { margin: -4px 0 0; font-weight: 700; }
+#entrada .nota { color: var(--muted); }
+#carregando { color: #fff !important; font-weight: 700; }
+
+/* ===== foto do ícone ===== */
+.foto-corpo { display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px; }
+.foto-palco { position: relative; width: min(100%, 300px); aspect-ratio: 1; margin: 4px auto; border-radius: 22.5%; overflow: hidden; background: linear-gradient(135deg,#FFA23D,#FF5A2E 45%,#FF2F7A); box-shadow: 0 18px 36px -18px rgba(255,61,127,.7); touch-action: none; cursor: grab; }
+.foto-palco canvas { width: 100%; height: 100%; display: block; }
+.foto-dica { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); background: rgba(0,0,0,.45); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; pointer-events: none; opacity: 0; transition: opacity .2s; }
+.foto-palco.tem .foto-dica { opacity: 1; }
+.foto-zoom { display: flex; align-items: center; gap: 10px; font-size: 18px; }
+.foto-zoom[hidden] { display: none; }
+.foto-zoom input { flex: 1; accent-color: #FF4F2E; }
 </style>
 </head>
 <body>
 
 <div id="entrada">
+  <div class="bolhas" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="miolo">
-    <img class="logo" src="icon-192.png" alt="">
-    <h1 class="serif">Despensa<em class="it">.</em></h1>
-    <p class="sub">A lista de mercado da nossa casa</p>
+    <div class="marca">
+      <img class="logo" src="icon-192.png" alt="">
+      <h1>Despensa<span>.</span></h1>
+      <p class="sub">Compras, estoque e cardápio da casa</p>
+    </div>
 
     <form id="fEntrar" class="config" style="align-items:center;text-align:center" hidden autocomplete="off">
+      <p class="quem" id="quemTxt">Quem está entrando?</p>
       <div class="pessoas" id="pessoas"></div>
-      <div class="campo"><input id="senha" type="password" inputmode="numeric" placeholder="Sua senha" aria-label="Senha" autocapitalize="off" autocorrect="off" spellcheck="false"><button type="button" class="olho" id="olho" aria-label="Mostrar senha">👁</button></div>
-      <button class="btn" id="btEntrar" type="submit">Entrar</button>
+      <input id="senha" type="hidden" aria-label="Senha"><button type="button" id="olho" hidden></button>
+      <div class="pin" id="pin" aria-live="polite"></div>
       <p class="erro" id="erroEntrar" role="alert"></p>
+      <div class="teclado" id="teclado"></div>
+      <button class="btn" id="btEntrar" type="submit">Entrar</button>
     </form>
 
     <form id="fConfig" class="config" hidden autocomplete="off">
@@ -456,8 +507,25 @@ body { background: var(--bg); }
   <div class="folha" style="padding:22px 20px 18px;gap:12px;text-align:center">
     <h2 class="serif" style="margin:0;font-size:26px">Sair da Despensa?</h2>
     <p class="nota" style="font-size:15px">Para entrar de novo, vai precisar da senha.</p>
+    <button class="btn claro" type="button" id="btFoto">📸 Foto do ícone</button>
     <button class="btn" type="button" id="btSairSim">Sair</button>
     <button class="btn claro" type="button" data-fecha>Cancelar</button>
+  </div>
+</div>
+
+<div class="fundo" id="fFoto" hidden role="dialog" aria-modal="true">
+  <div class="folha">
+    <div class="cab"><h2 class="serif">Foto do ícone</h2><button class="x" type="button" data-fecha aria-label="Fechar">✕</button></div>
+    <div class="corpo foto-corpo">
+      <p class="nota" id="fotoNota">Escolha uma foto de vocês. Ela vira o ícone do app e aparece na tela de entrada.</p>
+      <div class="foto-palco" id="fotoPalco"><canvas id="fotoCv" width="600" height="600"></canvas><span class="foto-dica" id="fotoDica">Arraste para ajustar</span></div>
+      <label class="foto-zoom" id="fotoZoomL" hidden>🔍<input type="range" id="fotoZoom" min="1" max="3" step="0.01" value="1" aria-label="Zoom"></label>
+      <input type="file" id="fotoArq" accept="image/*" hidden>
+      <button class="btn claro" type="button" id="btEscolher">🖼️ Escolher foto</button>
+      <button class="btn" type="button" id="btUsarFoto" disabled>Usar esta foto</button>
+      <button class="btn perigo" type="button" id="btPadrao">Voltar ao ícone padrão</button>
+      <p class="erro" id="erroFoto" role="alert"></p>
+    </div>
   </div>
 </div>
 
@@ -945,10 +1013,32 @@ async function mostrarEntrada() {
   if (!COFRE) { $('fConfig').hidden = false; return; }
   ls.set('desp-cofre', JSON.stringify(COFRE));
   const P = $('pessoas'); P.replaceChildren();
-  for (const [id, g] of Object.entries(GENTE)) { const b = el('button', 'pessoa'); b.type = 'button'; b.style.setProperty('--c1', g.c1); b.style.setProperty('--c2', g.c2); b.setAttribute('aria-pressed', id === escolhido ? 'true' : 'false'); b.appendChild(el('span', 'av', g.nome[0])); b.appendChild(document.createTextNode(g.nome)); b.onclick = () => { escolhido = id; mostrarPessoas(); $('senha').focus(); }; P.appendChild(b); }
+  for (const [id, g] of Object.entries(GENTE)) { const b = el('button', 'pessoa'); b.type = 'button'; b.style.setProperty('--c1', g.c1); b.style.setProperty('--c2', g.c2); b.setAttribute('aria-pressed', id === escolhido ? 'true' : 'false'); b.appendChild(el('span', 'av', g.nome[0])); b.appendChild(document.createTextNode(g.nome)); b.onclick = () => { escolhido = id; mostrarPessoas(); $('senha').value = ''; pinRender(); }; P.appendChild(b); }
+  if (!escolhido) escolhido = ls.get('desp-ultimo', ''); mostrarPessoas(); $('senha').value = ''; pinRender();
   $('fEntrar').hidden = false;
 }
-function mostrarPessoas() { document.querySelectorAll('#pessoas .pessoa').forEach((b, i) => b.setAttribute('aria-pressed', Object.keys(GENTE)[i] === escolhido ? 'true' : 'false')); $('senha').placeholder = escolhido ? 'Senha do ' + GENTE[escolhido].nome : 'Sua senha'; }
+const PINLEN = 6;
+function pinRender(erro) {
+  const v = $('senha').value, P = $('pin'); P.replaceChildren(); P.classList.toggle('erro', !!erro);
+  for (let i = 0; i < Math.max(PINLEN, v.length); i++) P.appendChild(el('i', i < v.length ? 'on' : ''));
+  $('btEntrar').disabled = v.length < 4;
+}
+function pinTecla(k) {
+  const i = $('senha'); $('erroEntrar').textContent = '';
+  if (k === '⌫') i.value = i.value.slice(0, -1); else if (k === 'limpar') i.value = ''; else if (i.value.length < 12) i.value += k;
+  pinRender();
+  if (i.value.length === PINLEN && escolhido) setTimeout(() => $('fEntrar').requestSubmit(), 120);
+}
+(function montarTeclado() {
+  const T = $('teclado');
+  for (const k of ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'limpar', '0', '⌫']) {
+    const b = el('button', k === 'limpar' || k === '⌫' ? 'fn' : '', k === 'limpar' ? 'Limpar' : k); b.type = 'button'; b.setAttribute('aria-label', k === '⌫' ? 'Apagar' : k);
+    b.onclick = () => pinTecla(k); T.appendChild(b);
+  }
+  document.addEventListener('keydown', (e) => { if ($('entrada').hidden || $('fEntrar').hidden) return; if (/^[0-9]$/.test(e.key)) pinTecla(e.key); else if (e.key === 'Backspace') pinTecla('⌫'); });
+  pinRender();
+})();
+function mostrarPessoas() { document.querySelectorAll('#pessoas .pessoa').forEach((b, i) => b.setAttribute('aria-pressed', Object.keys(GENTE)[i] === escolhido ? 'true' : 'false')); $('quemTxt').textContent = escolhido ? 'Oi, ' + GENTE[escolhido].nome + '! Digite sua senha' : 'Quem está entrando?'; if (escolhido) ls.set('desp-ultimo', escolhido); }
 $('olho').onclick = () => { const i = $('senha'); i.type = i.type === 'password' ? 'text' : 'password'; };
 $('fEntrar').addEventListener('submit', async (e) => {
   e.preventDefault(); const s = $('senha').value; if (!s) return;
@@ -959,8 +1049,8 @@ $('fEntrar').addEventListener('submit', async (e) => {
     const tok = await decifrar(o.k, COFRE.tok);
     ls.set('desp-sessao', JSON.stringify({ eu: o.quem, k: o.k })); $('senha').value = '';
     entrarApp(o.quem, o.k, tok.t);
-  } catch (err) { $('erroEntrar').textContent = escolhido ? 'Senha errada. Confira e tente de novo.' : 'Senha errada. Toque no seu nome e tente de novo.'; }
-  bt.disabled = false; bt.textContent = 'Entrar';
+  } catch (err) { $('erroEntrar').textContent = escolhido ? 'Senha errada. Tente de novo.' : 'Toque no seu nome e tente de novo.'; $('senha').value = ''; pinRender(true); if (navigator.vibrate) navigator.vibrate(120); }
+  bt.disabled = $('senha').value.length < 4; bt.textContent = 'Entrar';
 });
 $('fConfig').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -1000,6 +1090,97 @@ ondas($('ondaEntrada'), 12, 90, '#C65A40', 0.45);
 setInterval(() => { if (EU && document.visibilityState === 'visible') puxar(); }, 12000);
 document.addEventListener('visibilitychange', () => { if (EU && document.visibilityState === 'visible') puxar(); });
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+// ===== foto do ícone
+function iconePadrao(sz, pad, round){
+  const S=1024, c=document.createElement('canvas'); c.width=c.height=S; const g=c.getContext('2d');
+  const R=round?S*0.225:0;
+  const gr=g.createLinearGradient(0,0,S,S); gr.addColorStop(0,'#FFA23D'); gr.addColorStop(0.45,'#FF5A2E'); gr.addColorStop(1,'#FF2F7A');
+  g.fillStyle=gr; g.beginPath(); g.roundRect(0,0,S,S,R); g.fill();
+  g.save(); g.beginPath(); g.roundRect(0,0,S,S,R); g.clip();
+  let lu=g.createRadialGradient(S*0.2,S*0.1,0,S*0.2,S*0.1,S*0.75); lu.addColorStop(0,'rgba(255,230,160,.55)'); lu.addColorStop(1,'rgba(255,230,160,0)'); g.fillStyle=lu; g.fillRect(0,0,S,S);
+  lu=g.createRadialGradient(S*0.95,S*1.0,0,S*0.95,S*1.0,S*0.6); lu.addColorStop(0,'rgba(170,60,255,.45)'); lu.addColorStop(1,'rgba(170,60,255,0)'); g.fillStyle=lu; g.fillRect(0,0,S,S);
+  const k=1-2*pad; g.translate(S/2,S/2); g.scale(k,k); g.translate(-S/2,-S/2);
+  // folhas
+  const folha=(x,y,r,a,c1,c2)=>{ g.save(); g.translate(S*x,S*y); g.rotate(a); const fg=g.createLinearGradient(0,-S*r,0,0); fg.addColorStop(0,c1); fg.addColorStop(1,c2);
+    g.fillStyle=fg; g.beginPath(); g.moveTo(0,0); g.bezierCurveTo(S*r*0.6,-S*r*0.25,S*r*0.45,-S*r*0.9,0,-S*r); g.bezierCurveTo(-S*r*0.45,-S*r*0.9,-S*r*0.6,-S*r*0.25,0,0); g.fill(); g.restore(); };
+  folha(0.53,0.33,0.15,0.5,'#D9FF7A','#4CD964'); folha(0.5,0.34,0.13,-0.35,'#B8F56B','#2FBF71');
+  // sombra da sacola
+  g.save(); g.shadowColor='rgba(120,10,40,.35)'; g.shadowBlur=S*0.06; g.shadowOffsetY=S*0.03;
+  // alças
+  g.strokeStyle='#FFFFFF'; g.lineWidth=S*0.045; g.lineCap='round';
+  g.beginPath(); g.arc(S*0.5,S*0.40,S*0.12,Math.PI*1.02,Math.PI*1.98); g.stroke();
+  // corpo
+  g.fillStyle='#FFFFFF'; g.beginPath(); g.roundRect(S*0.25,S*0.37,S*0.5,S*0.44,S*0.09); g.fill();
+  g.restore();
+  // check com gradiente
+  const ck=g.createLinearGradient(S*0.38,S*0.5,S*0.62,S*0.7); ck.addColorStop(0,'#FF7A2E'); ck.addColorStop(1,'#FF2F7A');
+  g.strokeStyle=ck; g.lineWidth=S*0.055; g.lineCap='round'; g.lineJoin='round';
+  g.beginPath(); g.moveTo(S*0.395,S*0.59); g.lineTo(S*0.47,S*0.66); g.lineTo(S*0.61,S*0.51); g.stroke();
+  g.restore();
+  const o=document.createElement('canvas'); o.width=o.height=sz; const og=o.getContext('2d'); og.imageSmoothingQuality='high'; og.drawImage(c,0,0,sz,sz);
+  return o;
+}
+
+const FOTO = { img: null, z: 1, x: 0, y: 0 };
+function fotoCanvas(sz, pad) {
+  const c = document.createElement('canvas'); c.width = c.height = sz; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, sz, sz); gr.addColorStop(0, '#FFA23D'); gr.addColorStop(0.45, '#FF5A2E'); gr.addColorStop(1, '#FF2F7A');
+  g.fillStyle = gr; g.fillRect(0, 0, sz, sz);
+  const a = sz, o = 0, im = FOTO.img;
+  if (im) {
+    g.save();
+    const base = Math.max(a / im.width, a / im.height) * FOTO.z, w = im.width * base, h = im.height * base;
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(im, o + (a - w) / 2 + FOTO.x * a, o + (a - h) / 2 + FOTO.y * a, w, h);
+    g.restore();
+    // selinho da sacola no canto
+    const r = sz * (pad ? 0.1 : 0.125), cx = sz * (pad ? 0.86 : 1) - r * 1.3, cy = cx;
+    g.save(); g.shadowColor = 'rgba(0,0,0,.3)'; g.shadowBlur = r * 0.4; g.shadowOffsetY = r * 0.1;
+    g.fillStyle = gr; g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.fill(); g.restore();
+    g.fillStyle = '#fff'; g.beginPath(); g.roundRect(cx - r * 0.45, cy - r * 0.25, r * 0.9, r * 0.75, r * 0.16); g.fill();
+    g.strokeStyle = '#fff'; g.lineWidth = r * 0.11; g.lineCap = 'round'; g.beginPath(); g.arc(cx, cy - r * 0.22, r * 0.24, Math.PI * 1.05, Math.PI * 1.95); g.stroke();
+    g.strokeStyle = '#FF3D6A'; g.lineWidth = r * 0.12; g.lineJoin = 'round'; g.beginPath(); g.moveTo(cx - r * 0.2, cy + 0.12 * r); g.lineTo(cx - r * 0.04, cy + r * 0.27); g.lineTo(cx + r * 0.22, cy - r * 0.02); g.stroke();
+  }
+  return c;
+}
+function fotoDesenha() { const cv = $('fotoCv'), g = cv.getContext('2d'); g.clearRect(0, 0, cv.width, cv.height); g.drawImage(FOTO.img ? fotoCanvas(600, 0) : iconePadrao(600, 0, false), 0, 0); }
+function fotoLimita() { const im = FOTO.img; if (!im) return; const base = Math.max(1 / im.width, 1 / im.height) * FOTO.z, mx = Math.max(0, (im.width * base - 1) / 2), my = Math.max(0, (im.height * base - 1) / 2); FOTO.x = Math.min(mx, Math.max(-mx, FOTO.x)); FOTO.y = Math.min(my, Math.max(-my, FOTO.y)); }
+$('btFoto').onclick = () => { fechar(); $('erroFoto').textContent = ''; fotoDesenha(); abrir('fFoto'); };
+$('btEscolher').onclick = () => $('fotoArq').click();
+$('fotoArq').onchange = () => {
+  const f = $('fotoArq').files[0]; if (!f) return; const url = URL.createObjectURL(f); const im = new Image();
+  im.onload = () => { FOTO.img = im; FOTO.z = 1; FOTO.x = 0; FOTO.y = 0; $('fotoZoom').value = 1; $('fotoZoomL').hidden = false; $('fotoPalco').classList.add('tem'); $('btUsarFoto').disabled = false; fotoDesenha(); };
+  im.onerror = () => { $('erroFoto').textContent = 'Não consegui abrir essa foto. Tente outra.'; };
+  im.src = url; $('fotoArq').value = '';
+};
+$('fotoZoom').oninput = () => { FOTO.z = +$('fotoZoom').value; fotoLimita(); fotoDesenha(); };
+(() => { let ini = null; const P = $('fotoPalco');
+  P.addEventListener('pointerdown', (e) => { if (!FOTO.img) return; ini = { px: e.clientX, py: e.clientY, x: FOTO.x, y: FOTO.y }; P.setPointerCapture(e.pointerId); });
+  P.addEventListener('pointermove', (e) => { if (!ini) return; const w = P.clientWidth; FOTO.x = ini.x + (e.clientX - ini.px) / w; FOTO.y = ini.y + (e.clientY - ini.py) / w; fotoLimita(); fotoDesenha(); });
+  const fim = () => { ini = null; }; P.addEventListener('pointerup', fim); P.addEventListener('pointercancel', fim);
+})();
+const pngBytes = (cv) => new Promise((r) => cv.toBlob(async (b) => r(new Uint8Array(await b.arrayBuffer())), 'image/png'));
+async function subirIcones(fazer) {
+  const arqs = [['icon-192.png', fazer(192, 0)], ['icon-512.png', fazer(512, 0)], ['icon-maskable-512.png', fazer(512, 0.1)], ['apple-touch-icon.png', fazer(180, 0)]];
+  for (const [n, cv] of arqs) {
+    const bytes = await pngBytes(cv); let sha;
+    const g = await fetch(API + n + '?ref=main', { headers: hdr(), cache: 'no-store' }); if (g.ok) sha = (await g.json()).sha;
+    const r = await fetch(API + n, { method: 'PUT', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'ícone por ' + EU, content: pB64(bytes), sha }) });
+    if (!r.ok) throw new Error('falha ' + r.status);
+  }
+  const prev = arqs[0][1].toDataURL('image/png');
+  document.querySelectorAll('img[src^="icon-192.png"], img.logo, .topo-in > img').forEach((i) => { i.src = prev; });
+}
+async function salvarIcone(fazer, msg) {
+  const bts = [$('btUsarFoto'), $('btPadrao')]; bts.forEach((b) => { b.disabled = true; }); $('erroFoto').textContent = '';
+  const t = $('btUsarFoto').textContent; $('btUsarFoto').textContent = 'Salvando…';
+  try { await subirIcones(fazer); fechar(); toast(msg); }
+  catch (e) { $('erroFoto').textContent = 'Não consegui salvar agora. Confira a internet e tente de novo.'; }
+  finally { $('btUsarFoto').textContent = t; $('btPadrao').disabled = false; $('btUsarFoto').disabled = !FOTO.img; }
+}
+$('btUsarFoto').onclick = () => { if (FOTO.img) salvarIcone(fotoCanvas, 'Foto salva! Apague o atalho e adicione de novo para ver o ícone novo.'); };
+$('btPadrao').onclick = () => { FOTO.img = null; $('fotoZoomL').hidden = true; $('fotoPalco').classList.remove('tem'); fotoDesenha(); salvarIcone((sz, pad) => iconePadrao(sz, pad, false), 'Ícone padrão de volta.'); };
 </script>
 </body>
 </html>
