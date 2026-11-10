@@ -593,11 +593,13 @@ async function chaveSenha(senha, salt, uso) { const base = await crypto.subtle.i
 async function aes(kb64, uso) { return crypto.subtle.importKey('raw', b64(kb64), 'AES-GCM', false, [uso]); }
 async function cifrar(kb64, obj) { const iv = crypto.getRandomValues(new Uint8Array(12)); const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aes(kb64, 'encrypt'), new TextEncoder().encode(JSON.stringify(obj))); return { iv: pB64(iv), ct: pB64(ct) }; }
 async function decifrar(kb64, o) { const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(o.iv) }, await aes(kb64, 'decrypt'), b64(o.ct)); return JSON.parse(new TextDecoder().decode(pt)); }
-async function abrirCofre(cofre, senha) {
-  for (const v of cofre.vagas) {
-    try { const k = await chaveSenha(senha, b64(v.salt), 'decrypt'); return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(v.iv) }, k, b64(v.ct)))); } catch (e) {}
-  }
-  throw new Error('senha');
+async function abrirCofre(cofre, senha, quem) {
+  // cada pessoa só abre a PRÓPRIA vaga: a senha de um nunca entra como o outro
+  const i = Object.keys(GENTE).indexOf(quem), v = cofre.vagas[i];
+  if (!quem || !v) throw new Error('senha');
+  let o; try { const k = await chaveSenha(senha, b64(v.salt), 'decrypt'); o = JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(v.iv) }, k, b64(v.ct)))); } catch (e) { throw new Error('senha'); }
+  if (o.quem !== quem) throw new Error('senha');
+  return o;
 }
 async function vaga(senha, conteudo) { const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12)); const k = await chaveSenha(senha, salt, 'encrypt'); const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, k, new TextEncoder().encode(JSON.stringify(conteudo))); return { salt: pB64(salt), iv: pB64(iv), ct: pB64(ct) }; }
 
@@ -1042,10 +1044,10 @@ function mostrarPessoas() { document.querySelectorAll('#pessoas .pessoa').forEac
 $('olho').onclick = () => { const i = $('senha'); i.type = i.type === 'password' ? 'text' : 'password'; };
 $('fEntrar').addEventListener('submit', async (e) => {
   e.preventDefault(); const s = $('senha').value; if (!s) return;
+  if (!escolhido) { $('erroEntrar').textContent = 'Primeiro toque no seu nome.'; $('senha').value = ''; pinRender(true); return; }
   const bt = $('btEntrar'); bt.disabled = true; bt.textContent = 'Abrindo…'; $('erroEntrar').textContent = '';
   try {
-    const o = await abrirCofre(COFRE, s);
-    if (escolhido && o.quem !== escolhido) throw new Error('senha');
+    const o = await abrirCofre(COFRE, s, escolhido);
     const tok = await decifrar(o.k, COFRE.tok);
     ls.set('desp-sessao', JSON.stringify({ eu: o.quem, k: o.k })); $('senha').value = '';
     entrarApp(o.quem, o.k, tok.t);
@@ -1092,36 +1094,25 @@ document.addEventListener('visibilitychange', () => { if (EU && document.visibil
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 
 // ===== foto do ícone
-function iconePadrao(sz, pad, round){
-  const S=1024, c=document.createElement('canvas'); c.width=c.height=S; const g=c.getContext('2d');
-  const R=round?S*0.225:0;
-  const gr=g.createLinearGradient(0,0,S,S); gr.addColorStop(0,'#FFA23D'); gr.addColorStop(0.45,'#FF5A2E'); gr.addColorStop(1,'#FF2F7A');
-  g.fillStyle=gr; g.beginPath(); g.roundRect(0,0,S,S,R); g.fill();
-  g.save(); g.beginPath(); g.roundRect(0,0,S,S,R); g.clip();
-  let lu=g.createRadialGradient(S*0.2,S*0.1,0,S*0.2,S*0.1,S*0.75); lu.addColorStop(0,'rgba(255,230,160,.55)'); lu.addColorStop(1,'rgba(255,230,160,0)'); g.fillStyle=lu; g.fillRect(0,0,S,S);
-  lu=g.createRadialGradient(S*0.95,S*1.0,0,S*0.95,S*1.0,S*0.6); lu.addColorStop(0,'rgba(170,60,255,.45)'); lu.addColorStop(1,'rgba(170,60,255,0)'); g.fillStyle=lu; g.fillRect(0,0,S,S);
-  const k=1-2*pad; g.translate(S/2,S/2); g.scale(k,k); g.translate(-S/2,-S/2);
-  // folhas
-  const folha=(x,y,r,a,c1,c2)=>{ g.save(); g.translate(S*x,S*y); g.rotate(a); const fg=g.createLinearGradient(0,-S*r,0,0); fg.addColorStop(0,c1); fg.addColorStop(1,c2);
-    g.fillStyle=fg; g.beginPath(); g.moveTo(0,0); g.bezierCurveTo(S*r*0.6,-S*r*0.25,S*r*0.45,-S*r*0.9,0,-S*r); g.bezierCurveTo(-S*r*0.45,-S*r*0.9,-S*r*0.6,-S*r*0.25,0,0); g.fill(); g.restore(); };
-  folha(0.53,0.33,0.15,0.5,'#D9FF7A','#4CD964'); folha(0.5,0.34,0.13,-0.35,'#B8F56B','#2FBF71');
-  // sombra da sacola
-  g.save(); g.shadowColor='rgba(120,10,40,.35)'; g.shadowBlur=S*0.06; g.shadowOffsetY=S*0.03;
-  // alças
-  g.strokeStyle='#FFFFFF'; g.lineWidth=S*0.045; g.lineCap='round';
-  g.beginPath(); g.arc(S*0.5,S*0.40,S*0.12,Math.PI*1.02,Math.PI*1.98); g.stroke();
-  // corpo
-  g.fillStyle='#FFFFFF'; g.beginPath(); g.roundRect(S*0.25,S*0.37,S*0.5,S*0.44,S*0.09); g.fill();
-  g.restore();
-  // check com gradiente
-  const ck=g.createLinearGradient(S*0.38,S*0.5,S*0.62,S*0.7); ck.addColorStop(0,'#FF7A2E'); ck.addColorStop(1,'#FF2F7A');
-  g.strokeStyle=ck; g.lineWidth=S*0.055; g.lineCap='round'; g.lineJoin='round';
-  g.beginPath(); g.moveTo(S*0.395,S*0.59); g.lineTo(S*0.47,S*0.66); g.lineTo(S*0.61,S*0.51); g.stroke();
-  g.restore();
-  const o=document.createElement('canvas'); o.width=o.height=sz; const og=o.getContext('2d'); og.imageSmoothingQuality='high'; og.drawImage(c,0,0,sz,sz);
-  return o;
-}
-
+function icoBase(S,R,c1,c2,c3){const c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d');
+ const gr=g.createLinearGradient(0,0,S,S);gr.addColorStop(0,c1);gr.addColorStop(.55,c2);gr.addColorStop(1,c3);g.fillStyle=gr;g.beginPath();g.roundRect(0,0,S,S,R);g.fill();
+ g.save();g.beginPath();g.roundRect(0,0,S,S,R);g.clip();let lu=g.createRadialGradient(S*.2,S*.08,0,S*.2,S*.08,S*.7);lu.addColorStop(0,'rgba(255,255,255,.35)');lu.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=lu;g.fillRect(0,0,S,S);g.restore();return [c,g];}
+function icoFolha(g,S,x,y,r,a,c1,c2){g.save();g.translate(S*x,S*y);g.rotate(a);const fg=g.createLinearGradient(0,-S*r,0,0);fg.addColorStop(0,c1);fg.addColorStop(1,c2);g.fillStyle=fg;g.beginPath();g.moveTo(0,0);g.bezierCurveTo(S*r*.6,-S*r*.25,S*r*.45,-S*r*.9,0,-S*r);g.bezierCurveTo(-S*r*.45,-S*r*.9,-S*r*.6,-S*r*.25,0,0);g.fill();g.restore();}
+function iconeM(S, pad){ pad=pad||0; const [c,g]=icoBase(S,0,'#1E1B4B','#312E81','#4C1D95');
+ const k=1-2*pad; g.translate(S/2,S/2); g.scale(k,k); g.translate(-S/2,-S/2);
+ const dg=g.createLinearGradient(S*.2,S*.3,S*.8,S*.82);dg.addColorStop(0,'#FFB347');dg.addColorStop(.5,'#FF5A5F');dg.addColorStop(1,'#FF3DAA');
+ // toldo
+ const x0=S*.17,x1=S*.83,y0=S*.2,y1=S*.33,n=6,w=(x1-x0)/n;
+ g.save();g.shadowColor='rgba(0,0,0,.35)';g.shadowBlur=S*.04;g.shadowOffsetY=S*.015;
+ g.fillStyle='#fff';g.beginPath();g.roundRect(x0-S*.02,y0-S*.03,x1-x0+S*.04,S*.05,S*.025);g.fill();g.restore();
+ for(let i=0;i<n;i++){g.fillStyle=i%2?'#FFFFFF':dg;g.beginPath();g.moveTo(x0+i*w,y0);g.lineTo(x0+(i+1)*w,y0);g.lineTo(x0+(i+1)*w,y1);g.arc(x0+(i+.5)*w,y1,w/2,0,Math.PI);g.closePath();g.fill();}
+ // M
+ g.save();g.shadowColor='rgba(255,80,120,.5)';g.shadowBlur=S*.07;g.fillStyle=dg;
+ const L=S*.24,R=S*.76,T=S*.45,B=S*.8,t=S*.12;
+ g.beginPath();g.moveTo(L,B);g.lineTo(L,T);g.lineTo(L+t,T);g.lineTo(S*.5,S*.63);g.lineTo(R-t,T);g.lineTo(R,T);g.lineTo(R,B);g.lineTo(R-t,B);g.lineTo(R-t,S*.62);g.lineTo(S*.5,S*.78);g.lineTo(L+t,S*.62);g.lineTo(L+t,B);g.closePath();
+ g.lineJoin='round';g.lineWidth=S*.03;g.strokeStyle=dg;g.stroke();g.fill();g.restore();
+ return c;}
+function iconePadrao(sz, pad) { return iconeM(sz, pad); }
 const FOTO = { img: null, z: 1, x: 0, y: 0 };
 function fotoCanvas(sz, pad) {
   const c = document.createElement('canvas'); c.width = c.height = sz; const g = c.getContext('2d');
@@ -1136,11 +1127,8 @@ function fotoCanvas(sz, pad) {
     g.restore();
     // selinho da sacola no canto
     const r = sz * (pad ? 0.1 : 0.125), cx = sz * (pad ? 0.86 : 1) - r * 1.3, cy = cx;
-    g.save(); g.shadowColor = 'rgba(0,0,0,.3)'; g.shadowBlur = r * 0.4; g.shadowOffsetY = r * 0.1;
-    g.fillStyle = gr; g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.fill(); g.restore();
-    g.fillStyle = '#fff'; g.beginPath(); g.roundRect(cx - r * 0.45, cy - r * 0.25, r * 0.9, r * 0.75, r * 0.16); g.fill();
-    g.strokeStyle = '#fff'; g.lineWidth = r * 0.11; g.lineCap = 'round'; g.beginPath(); g.arc(cx, cy - r * 0.22, r * 0.24, Math.PI * 1.05, Math.PI * 1.95); g.stroke();
-    g.strokeStyle = '#FF3D6A'; g.lineWidth = r * 0.12; g.lineJoin = 'round'; g.beginPath(); g.moveTo(cx - r * 0.2, cy + 0.12 * r); g.lineTo(cx - r * 0.04, cy + r * 0.27); g.lineTo(cx + r * 0.22, cy - r * 0.02); g.stroke();
+    g.save(); g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = r * 0.4; g.shadowOffsetY = r * 0.1; g.fillStyle = '#fff'; g.beginPath(); g.arc(cx, cy, r * 1.08, 0, Math.PI * 2); g.fill(); g.restore();
+    g.save(); g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.clip(); g.drawImage(iconeM(Math.round(r * 2)), cx - r, cy - r, r * 2, r * 2); g.restore();
   }
   return c;
 }
