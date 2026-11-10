@@ -1096,7 +1096,14 @@ $('fEntrar').addEventListener('submit', async (e) => {
   if (!escolhido) { $('erroEntrar').textContent = 'Primeiro toque no seu nome.'; $('senha').value = ''; pinRender(true); return; }
   const bt = $('btEntrar'); bt.disabled = true; bt.textContent = 'Abrindo…'; $('erroEntrar').textContent = '';
   try {
-    const o = await abrirCofre(COFRE, s, escolhido);
+    let o;
+    try { o = await abrirCofre(COFRE, s, escolhido); }
+    catch (e1) {
+      // a senha pode ter sido trocada há pouco: busca a versão mais nova direto do GitHub e tenta de novo
+      const g = await fetch(API + 'casa.json?ref=main&t=' + Date.now(), { headers: { Accept: 'application/vnd.github.raw' }, cache: 'no-store' });
+      if (!g.ok) throw e1; COFRE = await g.json(); ls.set('desp-cofre', JSON.stringify(COFRE));
+      o = await abrirCofre(COFRE, s, escolhido);
+    }
     const tok = await decifrar(o.k, COFRE.tok);
     ls.set('desp-sessao', JSON.stringify({ eu: o.quem, k: o.k })); $('senha').value = '';
     entrarApp(o.quem, o.k, tok.t);
