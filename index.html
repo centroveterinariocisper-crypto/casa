@@ -799,7 +799,7 @@ function cartao(c) { const card = el('div', 'cartao'); const cab = el('div', 'ca
 function render() {
   if (!EU) return;
   const P = GENTE[EU];
-  $('euAv').textContent = P.nome[0]; avDe($('euAv'), EU); $('euNome').textContent = P.nome; $('eu').style.setProperty('--c1', P.c1); $('eu').style.setProperty('--c2', P.c2);
+  $('euAv').textContent = P.nome[0]; avDe($('euAv'), EU); $('btSenha').hidden = EU !== 'paulo'; $('euNome').textContent = P.nome; $('eu').style.setProperty('--c1', P.c1); $('eu').style.setProperty('--c2', P.c2);
   const s = $('sinc');
   s.classList.toggle('ok', !erroSinc && !!ultSinc);
   s.querySelector('span').textContent = erroSinc === 'chave' ? 'chave do GitHub recusada' : erroSinc ? 'sem internet, salvo aqui' : ultSinc ? 'em dia · ' + hora(ultSinc) : 'conectando';
@@ -1304,12 +1304,12 @@ $('btAddEst').onclick = () => { $('btAdd').click(); addModo = 'estoque'; desenha
 // ===== trocar senha (de quem estiver logado ou do outro)
 let senhaDe = '';
 function desenharSenhaQuem() { const c = $('senhaQuem'); c.innerHTML = ''; for (const [id, g] of Object.entries(GENTE)) { const b = el('button', senhaDe === id ? 'on' : '', id === EU ? g.nome + ' (eu)' : g.nome); b.type = 'button'; b.onclick = () => { senhaDe = id; desenharSenhaQuem(); }; c.appendChild(b); } }
-$('btSenha').onclick = () => { fechar(); senhaDe = EU; $('sNova').value = ''; $('sNova2').value = ''; $('erroSenhaN').textContent = ''; desenharSenhaQuem(); abrir('fSenha'); };
+$('btSenha').onclick = () => { if (EU !== 'paulo') return; fechar(); senhaDe = EU; $('sNova').value = ''; $('sNova2').value = ''; $('erroSenhaN').textContent = ''; desenharSenhaQuem(); abrir('fSenha'); };
 $('formSenha').onsubmit = async (e) => {
   e.preventDefault(); const a = $('sNova').value.trim(), b = $('sNova2').value.trim(), er = $('erroSenhaN');
   if (!/^[0-9]{6}$/.test(a)) { er.textContent = 'A senha precisa ter 6 números.'; return; }
   if (a !== b) { er.textContent = 'As duas senhas não estão iguais.'; return; }
-  const i = Object.keys(GENTE).indexOf(senhaDe); if (i < 0) return;
+  if (EU !== 'paulo') return; const i = Object.keys(GENTE).indexOf(senhaDe); if (i < 0) return;
   const bt = $('btSalvarSenha'); bt.disabled = true; bt.textContent = 'Salvando…'; er.textContent = '';
   try {
     const g = await fetch(API + 'casa.json?ref=main&t=' + Date.now(), { headers: hdr(), cache: 'no-store' }); if (!g.ok) throw 0;
