@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-title" content="Despensa">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icone-m-192.png">
+<link rel="apple-touch-icon" href="icone-m-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,600,100;1,9..144,500,100;1,9..144,600,100&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
@@ -379,10 +379,15 @@ body { background: var(--bg); }
 
 /* ===== foto do ícone ===== */
 .foto-corpo { display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px; }
-.foto-palco { position: relative; width: min(100%, 300px); aspect-ratio: 1; margin: 4px auto; border-radius: 22.5%; overflow: hidden; background: linear-gradient(135deg,#FFA23D,#FF5A2E 45%,#FF2F7A); box-shadow: 0 18px 36px -18px rgba(255,61,127,.7); touch-action: none; cursor: grab; }
+.foto-palco { position: relative; width: min(100%, 280px); aspect-ratio: 1; margin: 4px auto; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg,#FFA23D,#FF5A2E 45%,#FF2F7A); box-shadow: 0 18px 36px -18px rgba(255,61,127,.7); touch-action: none; cursor: grab; }
 .foto-palco canvas { width: 100%; height: 100%; display: block; }
 .foto-dica { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); background: rgba(0,0,0,.45); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; pointer-events: none; opacity: 0; transition: opacity .2s; }
 .foto-palco.tem .foto-dica { opacity: 1; }
+.av.foto { background-size: cover !important; background-position: center !important; color: transparent !important; }
+.estAcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.estAcoes .btn { padding: 13px 10px; font-size: 14.5px; }
+.estAcoes .btn.on { background: var(--ink); color: #fff; }
+.btExc { flex: 0 0 auto; border: 1.5px solid #F7C2B6; background: #FFF1EC; color: #E2401C; border-radius: 99px; padding: 8px 14px; font-weight: 800; font-size: 14px; }
 .foto-zoom { display: flex; align-items: center; gap: 10px; font-size: 18px; }
 .foto-zoom[hidden] { display: none; }
 .foto-zoom input { flex: 1; accent-color: #FF4F2E; }
@@ -394,7 +399,7 @@ body { background: var(--bg); }
   <div class="bolhas" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="miolo">
     <div class="marca">
-      <img class="logo" src="icon-192.png" alt="">
+      <img class="logo" src="icone-m-192.png" alt="">
       <h1>Despensa<span>.</span></h1>
       <p class="sub">Compras, estoque e cardápio da casa</p>
     </div>
@@ -431,7 +436,7 @@ body { background: var(--bg); }
 
 <header class="topo" id="topo" hidden>
   <div class="topo-in">
-    <img src="icon-192.png" alt="">
+    <img src="icone-m-192.png" alt="">
     <div class="tit"><h1 class="serif">Despensa<em class="it">.</em></h1><div class="sinc" id="sinc"><i></i><span>conectando</span></div></div>
     <button class="eu" id="eu" type="button" aria-label="Sair"><span class="av" id="euAv"></span><span id="euNome"></span></button>
   </div>
@@ -456,6 +461,7 @@ body { background: var(--bg); }
 
   <section id="vComprar" style="display:flex;flex-direction:column;gap:14px"></section>
   <section id="vEstoque" hidden style="display:flex;flex-direction:column;gap:14px">
+    <div class="estAcoes"><button class="btn claro" type="button" id="btAddEst">＋ Adicionar item</button><button class="btn claro" type="button" id="btEditEst">✏️ Editar / excluir</button></div>
     <div class="busca"><span>🔎</span><input id="busca" type="search" placeholder="Procurar no estoque" aria-label="Procurar"></div>
     <div class="chips" id="chips"></div>
     <div id="listaEst" style="display:flex;flex-direction:column;gap:14px"></div>
@@ -507,7 +513,7 @@ body { background: var(--bg); }
   <div class="folha" style="padding:22px 20px 18px;gap:12px;text-align:center">
     <h2 class="serif" style="margin:0;font-size:26px">Sair da Despensa?</h2>
     <p class="nota" style="font-size:15px">Para entrar de novo, vai precisar da senha.</p>
-    <button class="btn claro" type="button" id="btFoto">📸 Foto do ícone</button>
+    <button class="btn claro" type="button" id="btFoto">📸 Minha foto</button>
     <button class="btn" type="button" id="btSairSim">Sair</button>
     <button class="btn claro" type="button" data-fecha>Cancelar</button>
   </div>
@@ -515,15 +521,15 @@ body { background: var(--bg); }
 
 <div class="fundo" id="fFoto" hidden role="dialog" aria-modal="true">
   <div class="folha">
-    <div class="cab"><h2 class="serif">Foto do ícone</h2><button class="x" type="button" data-fecha aria-label="Fechar">✕</button></div>
+    <div class="cab"><h2 class="serif">Minha foto</h2><button class="x" type="button" data-fecha aria-label="Fechar">✕</button></div>
     <div class="corpo foto-corpo">
-      <p class="nota" id="fotoNota">Escolha uma foto de vocês. Ela vira o ícone do app e aparece na tela de entrada.</p>
+      <p class="nota" id="fotoNota">Escolha uma foto sua. Ela aparece no lugar da letra, na tela de entrada, lá em cima e no histórico.</p>
       <div class="foto-palco" id="fotoPalco"><canvas id="fotoCv" width="600" height="600"></canvas><span class="foto-dica" id="fotoDica">Arraste para ajustar</span></div>
       <label class="foto-zoom" id="fotoZoomL" hidden>🔍<input type="range" id="fotoZoom" min="1" max="3" step="0.01" value="1" aria-label="Zoom"></label>
       <input type="file" id="fotoArq" accept="image/*" hidden>
       <button class="btn claro" type="button" id="btEscolher">🖼️ Escolher foto</button>
       <button class="btn" type="button" id="btUsarFoto" disabled>Usar esta foto</button>
-      <button class="btn perigo" type="button" id="btPadrao">Voltar ao ícone padrão</button>
+      <button class="btn perigo" type="button" id="btPadrao">Tirar minha foto</button>
       <p class="erro" id="erroFoto" role="alert"></p>
     </div>
   </div>
@@ -723,7 +729,7 @@ function cartao(c) { const card = el('div', 'cartao'); const cab = el('div', 'ca
 function render() {
   if (!EU) return;
   const P = GENTE[EU];
-  $('euAv').textContent = P.nome[0]; $('euNome').textContent = P.nome; $('eu').style.setProperty('--c1', P.c1); $('eu').style.setProperty('--c2', P.c2);
+  $('euAv').textContent = P.nome[0]; avDe($('euAv'), EU); $('euNome').textContent = P.nome; $('eu').style.setProperty('--c1', P.c1); $('eu').style.setProperty('--c2', P.c2);
   const s = $('sinc');
   s.classList.toggle('ok', !erroSinc && !!ultSinc);
   s.querySelector('span').textContent = erroSinc === 'chave' ? 'chave do GitHub recusada' : erroSinc ? 'sem internet, salvo aqui' : ultSinc ? 'em dia · ' + hora(ultSinc) : 'conectando';
@@ -795,7 +801,9 @@ async function copiarLista(lista, zap) {
   if (zap) { location.href = 'https://wa.me/?text=' + encodeURIComponent(t); return; }
   try { await navigator.clipboard.writeText(t); toast('Lista copiada'); } catch (e) { toast('Não deu para copiar neste celular'); }
 }
+let editEst = false;
 function desenharEstoque() {
+  $('btEditEst').classList.toggle('on', editEst); $('btEditEst').textContent = editEst ? '✓ Pronto' : '✏️ Editar / excluir';
   const q = norm($('busca').value.trim()), todosI = todos(), exc = todos(true).filter((x) => x.x);
   const ch = $('chips'); ch.replaceChildren();
   const add = (id, txt) => { const b = el('button', catSel === id ? 'on' : '', txt); b.type = 'button'; b.onclick = () => { catSel = catSel === id ? '' : id; desenharEstoque(); }; ch.appendChild(b); };
@@ -812,6 +820,12 @@ function desenharEstoque() {
     for (const x of by[c].sort((a, b) => a.n.localeCompare(b.n, 'pt'))) {
       const r = el('div', 'linha'); const tx = el('div', 'tx'); tx.appendChild(el('b', null, x.n));
       tx.onclick = () => abrirItem(x.id);
+      if (editEst && catSel !== '__exc') {
+        tx.appendChild(el('small', null, x.q > 0 ? x.q + ' em casa' : 'toque para editar'));
+        const bx = el('button', 'btExc', '🗑 Excluir'); bx.type = 'button'; bx.setAttribute('aria-label', 'Excluir ' + x.n);
+        bx.onclick = () => { const u = mudar(x.id, { x: 1, b: 0 }, { k: 'exclui' }); toast(x.n + ' excluído', u); };
+        r.append(tx, bx); card.appendChild(r); continue;
+      }
       if (catSel === '__exc') {
         tx.appendChild(el('small', null, 'excluído'));
         const bb = el('button', null, '↩ Recolocar'); bb.type = 'button'; bb.style.cssText = 'border:1px solid var(--line);background:var(--oliva-soft);color:var(--oliva);border-radius:99px;padding:8px 14px;font-weight:700';
@@ -855,7 +869,7 @@ function desenharHist() {
     if (rot !== dia) { card.appendChild(el('div', 'cat', rot)); dia = rot; }
     const G = GENTE[x.por] || { nome: '?', c1: '#999', c2: '#bbb' };
     const r = el('div', 'hist'); r.appendChild(el('span', 'hora', hora(x.t)));
-    const av = el('span', 'av', G.nome[0]); av.style.setProperty('--c1', G.c1); av.style.setProperty('--c2', G.c2); r.appendChild(av);
+    const av = avDe(el('span', 'av', G.nome[0]), x.por); av.style.setProperty('--c1', G.c1); av.style.setProperty('--c2', G.c2); r.appendChild(av);
     const [frase, tag] = (FRASE[x.k] || FRASE.lista)(x.v);
     const nome = (CATI[x.i] && CATI[x.i].n) || x.n || x.i;
     const tx = el('div', 'tx'); tx.appendChild(el('b', null, G.nome + ' ')); tx.appendChild(document.createTextNode(frase + ' ')); if (x.k !== 'menu') tx.appendChild(el('b', null, nome));
@@ -898,11 +912,13 @@ function abrirItem(id) {
 }
 
 // ===== folha "o que comprar?"
-let novoCat = 'Outros';
+let novoCat = 'Outros', addModo = 'lista';
 function desenharOpcoes() {
   const txt = $('buscaAdd').value.trim(), q = norm(txt), O = $('opcoes'); O.replaceChildren();
+  const EST = addModo === 'estoque';
+  $('tAdd').innerHTML = EST ? 'O que tem <em class="it" style="color:var(--oliva)">em casa?</em>' : 'O que <em class="it" style="color:var(--terra)">comprar?</em>';
   const lista0 = paraComprar();
-  if (lista0.length && !q) { const f = el('div', 'faltando'); f.appendChild(el('b', null, `Já na lista (${lista0.length})`)); const d = el('div'); for (const x of lista0) d.appendChild(el('span', null, x.b + '× ' + x.n)); f.appendChild(d); O.appendChild(f); }
+  if (lista0.length && !q && !EST) { const f = el('div', 'faltando'); f.appendChild(el('b', null, `Já na lista (${lista0.length})`)); const d = el('div'); for (const x of lista0) d.appendChild(el('span', null, x.b + '× ' + x.n)); f.appendChild(d); O.appendChild(f); }
   const nota = (x) => { const n = norm(x.n); return n.startsWith(q) ? 0 : n.split(/[\s/-]+/).some((w) => w.startsWith(q)) ? 1 : 2; };
   const lista = todos(true).filter((x) => !q || norm(x.n).includes(q) || norm(x.c).includes(q))
     .sort((a, b) => q ? (nota(a) - nota(b) || a.x - b.x || a.n.localeCompare(b.n, 'pt')) : (ordemCat(a.c) - ordemCat(b.c) || a.n.localeCompare(b.n, 'pt')));
@@ -912,9 +928,10 @@ function desenharOpcoes() {
     if (!q && x.c !== ult) { O.appendChild(el('div', 'grupo-rot', (EMO[x.c] || '') + ' ' + x.c)); ult = x.c; }
     const b = el('button', 'opc'); b.type = 'button';
     const tx = el('span', 'tx'); tx.appendChild(el('b', null, x.n)); tx.appendChild(el('small', null, x.x ? 'excluído · ' + x.c : (q ? x.c + ' · ' : '') + 'em casa: ' + (x.q == null ? '–' : x.q))); b.appendChild(tx);
-    b.appendChild(el('span', 'acao' + (x.x ? ' volta' : ''), x.x ? '↩ Recolocar' : x.b ? `na lista (${x.b}) +1` : '+ Comprar'));
+    b.appendChild(el('span', 'acao' + (x.x || EST ? ' volta' : ''), x.x ? '↩ Recolocar' : EST ? '+1 em casa' : x.b ? `na lista (${x.b}) +1` : '+ Comprar'));
     b.onclick = () => {
-      if (x.x) { const u = mudar(x.id, { x: 0, b: 1 }, { k: 'volta' }); toast(x.n + ' voltou e foi para a lista', u); }
+      if (EST) { const nq = (x.q || 0) + 1; const u = mudar(x.id, { x: 0, q: nq }, { k: 'qtd', v: nq }); toast(`${x.n}: ${nq} em casa`, u); }
+      else if (x.x) { const u = mudar(x.id, { x: 0, b: 1 }, { k: 'volta' }); toast(x.n + ' voltou e foi para a lista', u); }
       else { const nb = x.b + 1; const u = mudar(x.id, { b: nb }, { k: 'lista', v: nb }); toast(nb > 1 ? `${x.n}: ${nb} na lista` : x.n + ' foi para a lista', u); }
       $('buscaAdd').value = ''; desenharOpcoes(); $('buscaAdd').focus();
     };
@@ -925,14 +942,14 @@ function desenharOpcoes() {
     const ce = el('div', 'catEsc');
     for (const [c, e] of CATS) { const bb = el('button', c === novoCat ? 'on' : '', e + ' ' + c); bb.type = 'button'; bb.onclick = () => { novoCat = c; desenharOpcoes(); }; ce.appendChild(bb); }
     box.appendChild(ce);
-    const nb = el('button', 'novo', `+ Criar "${txt}" e pôr na lista`); nb.type = 'button';
-    nb.onclick = () => { const n = txt.charAt(0).toUpperCase() + txt.slice(1); const id = 'x-' + slug(n); const u = mudar(id, { n, c: novoCat, l: lojaPadrao(novoCat), q: 0, b: 1, x: 0 }, { k: 'novo' }); toast(n + ' criado e na lista', u); $('buscaAdd').value = ''; novoCat = 'Outros'; desenharOpcoes(); };
+    const nb = el('button', 'novo', EST ? `+ Criar "${txt}" no estoque` : `+ Criar "${txt}" e pôr na lista`); nb.type = 'button';
+    nb.onclick = () => { const n = txt.charAt(0).toUpperCase() + txt.slice(1); const id = 'x-' + slug(n); const u = mudar(id, { n, c: novoCat, l: lojaPadrao(novoCat), q: EST ? 1 : 0, b: EST ? 0 : 1, x: 0 }, { k: 'novo' }); toast(n + (EST ? ' criado no estoque' : ' criado e na lista'), u); $('buscaAdd').value = ''; novoCat = 'Outros'; desenharOpcoes(); };
     box.appendChild(nb); O.appendChild(box);
   }
 }
 const abrir = (id) => { $(id).hidden = false; document.body.style.overflow = 'hidden'; };
 const fechar = () => { document.querySelectorAll('.fundo').forEach((f) => { f.hidden = true; }); document.body.style.overflow = ''; itemAberto = ''; };
-$('btAdd').onclick = () => { $('buscaAdd').value = ''; desenharOpcoes(); abrir('fAdd'); setTimeout(() => $('buscaAdd').focus(), 80); };
+$('btAdd').onclick = () => { addModo = 'lista'; $('buscaAdd').value = ''; desenharOpcoes(); abrir('fAdd'); setTimeout(() => $('buscaAdd').focus(), 80); };
 $('buscaAdd').addEventListener('input', desenharOpcoes);
 document.querySelectorAll('.fundo').forEach((f) => f.addEventListener('click', (e) => { if (e.target === f || e.target.closest('[data-fecha]')) fechar(); }));
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(); });
@@ -1015,7 +1032,7 @@ async function mostrarEntrada() {
   if (!COFRE) { $('fConfig').hidden = false; return; }
   ls.set('desp-cofre', JSON.stringify(COFRE));
   const P = $('pessoas'); P.replaceChildren();
-  for (const [id, g] of Object.entries(GENTE)) { const b = el('button', 'pessoa'); b.type = 'button'; b.style.setProperty('--c1', g.c1); b.style.setProperty('--c2', g.c2); b.setAttribute('aria-pressed', id === escolhido ? 'true' : 'false'); b.appendChild(el('span', 'av', g.nome[0])); b.appendChild(document.createTextNode(g.nome)); b.onclick = () => { escolhido = id; mostrarPessoas(); $('senha').value = ''; pinRender(); }; P.appendChild(b); }
+  for (const [id, g] of Object.entries(GENTE)) { const b = el('button', 'pessoa'); b.type = 'button'; b.style.setProperty('--c1', g.c1); b.style.setProperty('--c2', g.c2); b.setAttribute('aria-pressed', id === escolhido ? 'true' : 'false'); b.appendChild(avDe(el('span', 'av', g.nome[0]), id)); b.appendChild(document.createTextNode(g.nome)); b.onclick = () => { escolhido = id; mostrarPessoas(); $('senha').value = ''; pinRender(); }; P.appendChild(b); }
   if (!escolhido) escolhido = ls.get('desp-ultimo', ''); mostrarPessoas(); $('senha').value = ''; pinRender();
   $('fEntrar').hidden = false;
 }
@@ -1100,41 +1117,47 @@ function icoBase(S,R,c1,c2,c3){const c=document.createElement('canvas');c.width=
 function icoFolha(g,S,x,y,r,a,c1,c2){g.save();g.translate(S*x,S*y);g.rotate(a);const fg=g.createLinearGradient(0,-S*r,0,0);fg.addColorStop(0,c1);fg.addColorStop(1,c2);g.fillStyle=fg;g.beginPath();g.moveTo(0,0);g.bezierCurveTo(S*r*.6,-S*r*.25,S*r*.45,-S*r*.9,0,-S*r);g.bezierCurveTo(-S*r*.45,-S*r*.9,-S*r*.6,-S*r*.25,0,0);g.fill();g.restore();}
 function iconeM(S, pad){ pad=pad||0; const [c,g]=icoBase(S,0,'#1E1B4B','#312E81','#4C1D95');
  const k=1-2*pad; g.translate(S/2,S/2); g.scale(k,k); g.translate(-S/2,-S/2);
- const dg=g.createLinearGradient(S*.2,S*.3,S*.8,S*.82);dg.addColorStop(0,'#FFB347');dg.addColorStop(.5,'#FF5A5F');dg.addColorStop(1,'#FF3DAA');
- // toldo
- const x0=S*.17,x1=S*.83,y0=S*.2,y1=S*.33,n=6,w=(x1-x0)/n;
- g.save();g.shadowColor='rgba(0,0,0,.35)';g.shadowBlur=S*.04;g.shadowOffsetY=S*.015;
- g.fillStyle='#fff';g.beginPath();g.roundRect(x0-S*.02,y0-S*.03,x1-x0+S*.04,S*.05,S*.025);g.fill();g.restore();
- for(let i=0;i<n;i++){g.fillStyle=i%2?'#FFFFFF':dg;g.beginPath();g.moveTo(x0+i*w,y0);g.lineTo(x0+(i+1)*w,y0);g.lineTo(x0+(i+1)*w,y1);g.arc(x0+(i+.5)*w,y1,w/2,0,Math.PI);g.closePath();g.fill();}
- // M
- g.save();g.shadowColor='rgba(255,80,120,.5)';g.shadowBlur=S*.07;g.fillStyle=dg;
- const L=S*.24,R=S*.76,T=S*.45,B=S*.8,t=S*.12;
- g.beginPath();g.moveTo(L,B);g.lineTo(L,T);g.lineTo(L+t,T);g.lineTo(S*.5,S*.63);g.lineTo(R-t,T);g.lineTo(R,T);g.lineTo(R,B);g.lineTo(R-t,B);g.lineTo(R-t,S*.62);g.lineTo(S*.5,S*.78);g.lineTo(L+t,S*.62);g.lineTo(L+t,B);g.closePath();
- g.lineJoin='round';g.lineWidth=S*.03;g.strokeStyle=dg;g.stroke();g.fill();g.restore();
+ const dg=g.createLinearGradient(S*.2,S*.25,S*.8,S*.8);dg.addColorStop(0,'#FFB347');dg.addColorStop(.5,'#FF5A5F');dg.addColorStop(1,'#FF3DAA');
+ g.save();g.shadowColor='rgba(255,80,120,.45)';g.shadowBlur=S*.06;
+ g.strokeStyle=dg;g.lineCap='round';g.lineJoin='round';g.lineWidth=S*.055;
+ // alça do carrinho
+ g.beginPath();g.moveTo(S*.13,S*.25);g.lineTo(S*.22,S*.25);g.lineTo(S*.28,S*.33);g.stroke();
+ // M (cesto)
+ const L=S*.29,R=S*.8,T=S*.33,B=S*.66,t=S*.105;
+ g.fillStyle=dg;g.beginPath();g.moveTo(L,B);g.lineTo(L,T);g.lineTo(L+t,T);g.lineTo((L+R)/2,S*.5);g.lineTo(R-t,T);g.lineTo(R,T);g.lineTo(R,B);g.lineTo(R-t,B);g.lineTo(R-t,S*.49);g.lineTo((L+R)/2,S*.64);g.lineTo(L+t,S*.49);g.lineTo(L+t,B);g.closePath();
+ g.lineWidth=S*.03;g.stroke();g.fill();
+ // base
+ g.lineWidth=S*.05;g.beginPath();g.moveTo(L-S*.01,S*.735);g.lineTo(R+S*.01,S*.735);g.stroke();
+ g.restore();
+ // rodas
+ g.fillStyle='#fff';for(const x of [L+S*.06,R-S*.06]){g.beginPath();g.arc(x,S*.83,S*.048,0,7);g.fill();}
+ g.fillStyle='#4C1D95';for(const x of [L+S*.06,R-S*.06]){g.beginPath();g.arc(x,S*.83,S*.018,0,7);g.fill();}
  return c;}
 function iconePadrao(sz, pad) { return iconeM(sz, pad); }
 const FOTO = { img: null, z: 1, x: 0, y: 0 };
-function fotoCanvas(sz, pad) {
-  const c = document.createElement('canvas'); c.width = c.height = sz; const g = c.getContext('2d');
-  const gr = g.createLinearGradient(0, 0, sz, sz); gr.addColorStop(0, '#FFA23D'); gr.addColorStop(0.45, '#FF5A2E'); gr.addColorStop(1, '#FF2F7A');
-  g.fillStyle = gr; g.fillRect(0, 0, sz, sz);
-  const a = sz, o = 0, im = FOTO.img;
-  if (im) {
-    g.save();
-    const base = Math.max(a / im.width, a / im.height) * FOTO.z, w = im.width * base, h = im.height * base;
-    g.imageSmoothingQuality = 'high';
-    g.drawImage(im, o + (a - w) / 2 + FOTO.x * a, o + (a - h) / 2 + FOTO.y * a, w, h);
-    g.restore();
-    // selinho da sacola no canto
-    const r = sz * (pad ? 0.1 : 0.125), cx = sz * (pad ? 0.86 : 1) - r * 1.3, cy = cx;
-    g.save(); g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = r * 0.4; g.shadowOffsetY = r * 0.1; g.fillStyle = '#fff'; g.beginPath(); g.arc(cx, cy, r * 1.08, 0, Math.PI * 2); g.fill(); g.restore();
-    g.save(); g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.clip(); g.drawImage(iconeM(Math.round(r * 2)), cx - r, cy - r, r * 2, r * 2); g.restore();
-  }
+function fotoCanvas(sz) {
+  const c = document.createElement('canvas'); c.width = c.height = sz; const g = c.getContext('2d'), im = FOTO.img;
+  g.fillStyle = '#ddd'; g.fillRect(0, 0, sz, sz);
+  if (im) { const base = Math.max(sz / im.width, sz / im.height) * FOTO.z, w = im.width * base, h = im.height * base; g.imageSmoothingQuality = 'high'; g.drawImage(im, (sz - w) / 2 + FOTO.x * sz, (sz - h) / 2 + FOTO.y * sz, w, h); }
   return c;
 }
-function fotoDesenha() { const cv = $('fotoCv'), g = cv.getContext('2d'); g.clearRect(0, 0, cv.width, cv.height); g.drawImage(FOTO.img ? fotoCanvas(600, 0) : iconePadrao(600, 0, false), 0, 0); }
+// fotos de perfil: foto-paulo.jpg / foto-luis.jpg no site
+const FOTOS = {};
+const fotoUrl = (id) => 'foto-' + id + '.jpg?v=' + Math.floor(Date.now() / 120000);
+function aplicarFoto(sp) { const u = FOTOS[sp.dataset.quem]; sp.classList.toggle('foto', !!u); sp.style.backgroundImage = u ? 'url("' + u + '")' : ''; }
+function avDe(sp, id) { sp.dataset.quem = id || ''; aplicarFoto(sp); return sp; }
+const repintarAvs = () => document.querySelectorAll('.av[data-quem]').forEach(aplicarFoto);
+function carregarFotos() { for (const id of Object.keys(GENTE)) { const im = new Image(); im.onload = () => { FOTOS[id] = im.src; repintarAvs(); }; im.onerror = () => { if (!String(FOTOS[id] || '').startsWith('data:')) { delete FOTOS[id]; repintarAvs(); } }; im.src = fotoUrl(id); } }
+carregarFotos(); document.addEventListener('visibilitychange', () => { if (!document.hidden) carregarFotos(); });
+function fotoDesenha() {
+  const cv = $('fotoCv'), g = cv.getContext('2d'); g.clearRect(0, 0, cv.width, cv.height);
+  if (FOTO.img) { g.drawImage(fotoCanvas(600), 0, 0); return; }
+  if (FOTOS[EU]) { const im = new Image(); im.onload = () => { g.drawImage(im, 0, 0, 600, 600); }; im.src = FOTOS[EU]; return; }
+  const P = GENTE[EU] || { nome: '?' }; const gr = g.createLinearGradient(0, 0, 600, 600); gr.addColorStop(0, EU === 'luis' ? '#2E8B57' : '#2F6DB5'); gr.addColorStop(1, EU === 'luis' ? '#6CC48E' : '#5FA0E6');
+  g.fillStyle = gr; g.fillRect(0, 0, 600, 600); g.fillStyle = '#fff'; g.font = '800 260px system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(P.nome[0], 300, 315);
+}
 function fotoLimita() { const im = FOTO.img; if (!im) return; const base = Math.max(1 / im.width, 1 / im.height) * FOTO.z, mx = Math.max(0, (im.width * base - 1) / 2), my = Math.max(0, (im.height * base - 1) / 2); FOTO.x = Math.min(mx, Math.max(-mx, FOTO.x)); FOTO.y = Math.min(my, Math.max(-my, FOTO.y)); }
-$('btFoto').onclick = () => { fechar(); $('erroFoto').textContent = ''; fotoDesenha(); abrir('fFoto'); };
+$('btFoto').onclick = () => { fechar(); FOTO.img = null; $('fotoZoomL').hidden = true; $('fotoPalco').classList.remove('tem'); $('btUsarFoto').disabled = true; $('btPadrao').hidden = !FOTOS[EU]; $('erroFoto').textContent = ''; fotoDesenha(); abrir('fFoto'); };
 $('btEscolher').onclick = () => $('fotoArq').click();
 $('fotoArq').onchange = () => {
   const f = $('fotoArq').files[0]; if (!f) return; const url = URL.createObjectURL(f); const im = new Image();
@@ -1148,27 +1171,27 @@ $('fotoZoom').oninput = () => { FOTO.z = +$('fotoZoom').value; fotoLimita(); fot
   P.addEventListener('pointermove', (e) => { if (!ini) return; const w = P.clientWidth; FOTO.x = ini.x + (e.clientX - ini.px) / w; FOTO.y = ini.y + (e.clientY - ini.py) / w; fotoLimita(); fotoDesenha(); });
   const fim = () => { ini = null; }; P.addEventListener('pointerup', fim); P.addEventListener('pointercancel', fim);
 })();
-const pngBytes = (cv) => new Promise((r) => cv.toBlob(async (b) => r(new Uint8Array(await b.arrayBuffer())), 'image/png'));
-async function subirIcones(fazer) {
-  const arqs = [['icon-192.png', fazer(192, 0)], ['icon-512.png', fazer(512, 0)], ['icon-maskable-512.png', fazer(512, 0.1)], ['apple-touch-icon.png', fazer(180, 0)]];
-  for (const [n, cv] of arqs) {
-    const bytes = await pngBytes(cv); let sha;
-    const g = await fetch(API + n + '?ref=main', { headers: hdr(), cache: 'no-store' }); if (g.ok) sha = (await g.json()).sha;
-    const r = await fetch(API + n, { method: 'PUT', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'ícone por ' + EU, content: pB64(bytes), sha }) });
-    if (!r.ok) throw new Error('falha ' + r.status);
-  }
-  const prev = arqs[0][1].toDataURL('image/png');
-  document.querySelectorAll('img[src^="icon-192.png"], img.logo, .topo-in > img').forEach((i) => { i.src = prev; });
-}
-async function salvarIcone(fazer, msg) {
-  const bts = [$('btUsarFoto'), $('btPadrao')]; bts.forEach((b) => { b.disabled = true; }); $('erroFoto').textContent = '';
-  const t = $('btUsarFoto').textContent; $('btUsarFoto').textContent = 'Salvando…';
-  try { await subirIcones(fazer); fechar(); toast(msg); }
+async function shaDe(n) { const g = await fetch(API + n + '?ref=main', { headers: hdr(), cache: 'no-store' }); return g.ok ? (await g.json()).sha : undefined; }
+async function acaoFoto(fazer, msg) {
+  const bts = [$('btUsarFoto'), $('btPadrao'), $('btEscolher')]; bts.forEach((b) => { b.disabled = true; }); $('erroFoto').textContent = '';
+  try { await fazer(); fechar(); repintarAvs(); toast(msg); }
   catch (e) { $('erroFoto').textContent = 'Não consegui salvar agora. Confira a internet e tente de novo.'; }
-  finally { $('btUsarFoto').textContent = t; $('btPadrao').disabled = false; $('btUsarFoto').disabled = !FOTO.img; }
+  finally { $('btEscolher').disabled = false; $('btPadrao').disabled = false; $('btUsarFoto').disabled = !FOTO.img; }
 }
-$('btUsarFoto').onclick = () => { if (FOTO.img) salvarIcone(fotoCanvas, 'Foto salva! Apague o atalho e adicione de novo para ver o ícone novo.'); };
-$('btPadrao').onclick = () => { FOTO.img = null; $('fotoZoomL').hidden = true; $('fotoPalco').classList.remove('tem'); fotoDesenha(); salvarIcone((sz, pad) => iconePadrao(sz, pad, false), 'Ícone padrão de volta.'); };
+$('btUsarFoto').onclick = () => { if (!FOTO.img) return; acaoFoto(async () => {
+  const cv = fotoCanvas(400), n = 'foto-' + EU + '.jpg';
+  const bytes = await new Promise((r) => cv.toBlob(async (b) => r(new Uint8Array(await b.arrayBuffer())), 'image/jpeg', 0.86));
+  const r = await fetch(API + n, { method: 'PUT', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'foto de ' + EU, content: pB64(bytes), sha: await shaDe(n) }) });
+  if (!r.ok) throw new Error('falha ' + r.status);
+  FOTOS[EU] = cv.toDataURL('image/jpeg', 0.86);
+}, 'Foto salva! Em alguns minutos aparece no outro celular também.'); };
+$('btPadrao').onclick = () => acaoFoto(async () => {
+  const n = 'foto-' + EU + '.jpg', sha = await shaDe(n);
+  if (sha) { const r = await fetch(API + n, { method: 'DELETE', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'tirou foto de ' + EU, sha }) }); if (!r.ok) throw new Error('falha ' + r.status); }
+  delete FOTOS[EU]; FOTO.img = null;
+}, 'Foto tirada. Volta a aparecer a letra.');
+$('btEditEst').onclick = () => { editEst = !editEst; if (catSel === '__exc') catSel = ''; desenharEstoque(); };
+$('btAddEst').onclick = () => { $('btAdd').click(); addModo = 'estoque'; desenharOpcoes(); };
 </script>
 </body>
 </html>
