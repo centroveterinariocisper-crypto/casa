@@ -388,6 +388,9 @@ body { background: var(--bg); }
 .estAcoes .btn { padding: 13px 10px; font-size: 14.5px; }
 .estAcoes .btn.on { background: var(--ink); color: #fff; }
 .btExc { flex: 0 0 auto; border: 1.5px solid #F7C2B6; background: #FFF1EC; color: #E2401C; border-radius: 99px; padding: 8px 14px; font-weight: 800; font-size: 14px; }
+.senha-corpo { display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px; }
+.campoS { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px; color: var(--muted); }
+.campoS input { padding: 14px 16px; border-radius: 16px; border: 1.5px solid var(--line); background: var(--bg); font-size: 22px; letter-spacing: .4em; text-align: center; color: var(--ink); }
 .foto-zoom { display: flex; align-items: center; gap: 10px; font-size: 18px; }
 .foto-zoom[hidden] { display: none; }
 .foto-zoom input { flex: 1; accent-color: #FF4F2E; }
@@ -399,6 +402,12 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: man
 .folha { max-height: calc(var(--vvh, 100dvh) - 24px - env(safe-area-inset-top, 0px)); }
 .folha .cab { flex: 0 0 auto; }
 .folha .corpo { flex: 1 1 auto; min-height: 0; }
+
+/* ===== leve para celular simples: sem desfoque (pesado ao rolar) ===== */
+.topo { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: var(--bg) !important; }
+#abas { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #fff !important; }
+.hero .mini span { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+#entrada .bolhas i { filter: none !important; }
 </style>
 </head>
 <body>
@@ -522,8 +531,23 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: man
     <h2 class="serif" style="margin:0;font-size:26px">Sair da Despensa?</h2>
     <p class="nota" style="font-size:15px">Para entrar de novo, vai precisar da senha.</p>
     <button class="btn claro" type="button" id="btFoto">📸 Minha foto</button>
+    <button class="btn claro" type="button" id="btSenha">🔑 Trocar senha</button>
     <button class="btn" type="button" id="btSairSim">Sair</button>
     <button class="btn claro" type="button" data-fecha>Cancelar</button>
+  </div>
+</div>
+
+<div class="fundo" id="fSenha" hidden role="dialog" aria-modal="true">
+  <div class="folha">
+    <div class="cab"><h2 class="serif">Trocar senha</h2><button class="x" type="button" data-fecha aria-label="Fechar">✕</button></div>
+    <form class="corpo senha-corpo" id="formSenha" autocomplete="off">
+      <p class="nota">De quem é a senha que vai mudar?</p>
+      <div class="catEsc" id="senhaQuem"></div>
+      <label class="campoS">Senha nova (6 números)<input id="sNova" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="new-password"></label>
+      <label class="campoS">Repita a senha nova<input id="sNova2" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="new-password"></label>
+      <button class="btn" type="submit" id="btSalvarSenha">Salvar senha nova</button>
+      <p class="erro" id="erroSenhaN" role="alert"></p>
+    </form>
   </div>
 </div>
 
@@ -1201,6 +1225,27 @@ $('btPadrao').onclick = () => acaoFoto(async () => {
 $('btEditEst').onclick = () => { editEst = !editEst; if (catSel === '__exc') catSel = ''; desenharEstoque(); };
 $('btAddEst').onclick = () => { $('btAdd').click(); addModo = 'estoque'; desenharOpcoes(); };
 
+// ===== trocar senha (de quem estiver logado ou do outro)
+let senhaDe = '';
+function desenharSenhaQuem() { const c = $('senhaQuem'); c.innerHTML = ''; for (const [id, g] of Object.entries(GENTE)) { const b = el('button', senhaDe === id ? 'on' : '', id === EU ? g.nome + ' (eu)' : g.nome); b.type = 'button'; b.onclick = () => { senhaDe = id; desenharSenhaQuem(); }; c.appendChild(b); } }
+$('btSenha').onclick = () => { fechar(); senhaDe = EU; $('sNova').value = ''; $('sNova2').value = ''; $('erroSenhaN').textContent = ''; desenharSenhaQuem(); abrir('fSenha'); };
+$('formSenha').onsubmit = async (e) => {
+  e.preventDefault(); const a = $('sNova').value.trim(), b = $('sNova2').value.trim(), er = $('erroSenhaN');
+  if (!/^[0-9]{6}$/.test(a)) { er.textContent = 'A senha precisa ter 6 números.'; return; }
+  if (a !== b) { er.textContent = 'As duas senhas não estão iguais.'; return; }
+  const i = Object.keys(GENTE).indexOf(senhaDe); if (i < 0) return;
+  const bt = $('btSalvarSenha'); bt.disabled = true; bt.textContent = 'Salvando…'; er.textContent = '';
+  try {
+    const g = await fetch(API + 'casa.json?ref=main&t=' + Date.now(), { headers: hdr(), cache: 'no-store' }); if (!g.ok) throw 0;
+    const meta = await g.json(); const cofre = meta.content ? JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))))) : JSON.parse(JSON.stringify(COFRE));
+    cofre.vagas[i] = await vaga(a, { quem: senhaDe, k: K });
+    const r = await fetch(API + 'casa.json', { method: 'PUT', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'senha nova de ' + senhaDe, content: utf8b64(JSON.stringify(cofre)), sha: meta.sha }) });
+    if (!r.ok) throw 0;
+    COFRE = cofre; ls.set('desp-cofre', JSON.stringify(cofre)); fechar(); toast('Senha ' + (senhaDe === EU ? 'sua' : 'do ' + GENTE[senhaDe].nome) + ' trocada!');
+  } catch (x) { er.textContent = 'Não consegui salvar agora. Confira a internet e tente de novo.'; }
+  finally { bt.disabled = false; bt.textContent = 'Salvar senha nova'; }
+};
+
 // ===== jeito de aplicativo
 (() => {
   const vv = window.visualViewport, R = document.documentElement;
@@ -1217,6 +1262,21 @@ $('btAddEst').onclick = () => { $('btAdd').click(); addModo = 'estoque'; desenha
     else if (!n && empurrado) { empurrado = false; if (history.state && history.state.folha) history.back(); }
   }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['hidden'] });
   addEventListener('popstate', () => { if (!empurrado) return; empurrado = false; fechar(); });
+})();
+
+// ===== atualiza sozinho quando sair versão nova
+(() => {
+  let v0 = null;
+  const ver = async () => {
+    try {
+      const t = await (await fetch('./sw.js?t=' + Date.now(), { cache: 'no-store' })).text();
+      const v = (t.match(/VERSAO = '([^']+)'/) || [])[1]; if (!v) return;
+      const ocupado = [...document.querySelectorAll('.fundo')].some((f) => !f.hidden) || /^(INPUT|TEXTAREA)$/.test((document.activeElement || {}).tagName || '');
+      if (v0 && v !== v0 && !ocupado) { location.reload(); return; }
+      if (!v0) v0 = v;
+    } catch (e) {}
+  };
+  ver(); document.addEventListener('visibilitychange', () => { if (!document.hidden) ver(); }); setInterval(ver, 5 * 60 * 1000);
 })();
 </script>
 </body>
