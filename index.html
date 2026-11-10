@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Despensa</title>
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#FBF6EE">
+<meta name="theme-color" content="#F5F6FA">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Despensa">
@@ -262,6 +262,85 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--mel); outli
 .novaIdeia button { border: 0; border-radius: 14px; padding: 0 16px; font-weight: 800; background: var(--ink); color: var(--bg); }
 #refTxt { width: 100%; font: inherit; font-size: 17px; padding: 14px 16px; border-radius: 18px; border: 1.5px solid var(--line-2); background: var(--bg); color: var(--ink); resize: vertical; }
 #refTxt:focus { outline: none; border-color: var(--terra); }
+
+.chips.lojas button.on { background: var(--terra); border-color: var(--terra); color: #fff; }
+
+/* ===================== DESIGN 3 · vibrante ===================== */
+:root {
+  --bg: #F5F6FA; --paper: #FFFFFF; --sand: #F0F1F6; --line: #ECEDF3; --line-2: #DFE1EA;
+  --ink: #161827; --muted: #6A6F86; --faint: #A6AABC;
+  --terra: #FF4F2E; --terra-2: #FF8A3D; --terra-soft: #FFEDE8;
+  --oliva: #12A150; --oliva-2: #2FD07A; --oliva-soft: #E3F8EC;
+  --mel: #FFC83D; --mel-soft: #FFF4D3;
+  --rosa: #FF3D7F; --uva: #7C4DFF;
+  --serif: "Plus Jakarta Sans", system-ui, sans-serif;
+  --sh: 0 10px 28px -14px rgba(22,24,39,.18), 0 2px 6px -2px rgba(22,24,39,.06);
+}
+body { background: var(--bg); }
+.serif { font-weight: 800; letter-spacing: -.03em; font-variation-settings: normal; }
+.serif em, em.it { font-style: normal; background: linear-gradient(90deg, var(--terra), var(--rosa)); -webkit-background-clip: text; background-clip: text; color: transparent !important; }
+#entrada { background: radial-gradient(120% 60% at 100% 0%, #FFE3D6 0%, transparent 60%), radial-gradient(90% 50% at 0% 100%, #E3F8EC 0%, transparent 60%), var(--bg); }
+#entrada h1 { font-size: 48px; }
+#entrada .logo { box-shadow: 0 20px 40px -18px rgba(255,79,46,.7); }
+.pessoa { border: 0; box-shadow: var(--sh); }
+.btn { background: linear-gradient(135deg, var(--terra-2), var(--terra) 55%, var(--rosa)); box-shadow: 0 14px 26px -12px rgba(255,79,46,.65); border-radius: 18px; }
+.topo { background: rgba(245,246,250,.82); border-bottom: 0; }
+.topo h1 { font-size: 23px; }
+.wrap { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 170px); }
+.hero { border-radius: 28px; background: radial-gradient(90% 120% at 100% 0%, #FFB86B 0%, transparent 55%), linear-gradient(135deg, #FF6A3D 0%, #FF3D7F 100%); box-shadow: 0 24px 40px -22px rgba(255,61,127,.75); }
+.hero.abast { background: radial-gradient(90% 120% at 100% 0%, #9BF0C0 0%, transparent 55%), linear-gradient(135deg, #12A150 0%, #0EA5A4 100%); box-shadow: 0 24px 40px -22px rgba(14,165,164,.7); }
+.hero h2 { font-family: var(--sans); font-weight: 800; letter-spacing: -.03em; font-size: 32px; }
+.hero .num { font-family: var(--sans); font-weight: 800; }
+.hero .mini span { background: rgba(255,255,255,.22); backdrop-filter: blur(4px); }
+.cartao { border: 0; box-shadow: var(--sh); border-radius: 22px; }
+.cat { color: var(--ink); letter-spacing: .02em; text-transform: none; font-size: 15px; font-weight: 800; padding: 14px 16px 4px; }
+.cat .em { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; font-size: 18px; }
+.chips button { border: 0; background: var(--paper); box-shadow: 0 2px 8px -4px rgba(22,24,39,.2); font-weight: 700; }
+.chips button.on { background: var(--ink); color: #fff; }
+.chips.lojas button.on { background: linear-gradient(135deg, var(--terra-2), var(--terra)); color: #fff; }
+.busca input { border: 0; box-shadow: var(--sh); }
+.stepper { background: var(--sand); }
+.stepper button { box-shadow: 0 1px 3px rgba(22,24,39,.14); }
+.stepper button:last-child { background: var(--ink); color: #fff; }
+.carrinho { border: 0; background: var(--sand); }
+.carrinho.on { background: linear-gradient(135deg, var(--terra-2), var(--terra)); color: #fff; }
+.carrinho .b { background: var(--ink); }
+.compra2 .check { border-color: var(--line-2); }
+.compra2.feito .check { background: var(--oliva-2); border-color: var(--oliva-2); }
+.compra2 .tx small.obs { color: var(--uva); font-weight: 600; }
+.linha .tx small.quase { color: #D97706; font-weight: 700; }
+.acoes button { border: 0; box-shadow: var(--sh); }
+.total { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--ink); color: #fff; border-radius: 20px; padding: 14px 18px; box-shadow: var(--sh); }
+.total span { font-size: 13.5px; opacity: .8; }
+.total b { font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
+.acabando { background: linear-gradient(135deg, #FFF4D3, #FFE8CC); border-radius: 20px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.acabando > b { font-size: 14px; }
+.acabando div { display: flex; flex-wrap: wrap; gap: 6px; }
+.acabando button { border: 0; background: #fff; border-radius: 99px; padding: 7px 12px; font-size: 13.5px; font-weight: 700; box-shadow: 0 2px 6px -3px rgba(0,0,0,.2); }
+.det .cx { background: var(--sand); }
+.det .cx .stepper button:last-child { background: var(--ink); color: #fff; }
+.det .cx .stepper.zero .v { color: var(--faint); }
+.det .cx.campos { display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; }
+.det .cx.campos label { display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; }
+.det .cx.campos input { width: 100%; min-width: 0; font: inherit; font-size: 16px; border: 0; border-radius: 12px; padding: 11px 12px; background: var(--paper); color: var(--ink); }
+.det .cx.campos input:focus { outline: 2px solid var(--terra); }
+.folha { border-radius: 28px 28px 22px 22px; }
+.ref .ic { background: var(--mel-soft); }
+.ideias span { background: var(--mel-soft); }
+.toast { background: var(--ink); color: #fff; }
+.toast button { background: var(--mel); }
+/* barra de abas embaixo, estilo app */
+#abas { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-radius: 0; padding: 6px max(10px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)); background: rgba(255,255,255,.92); backdrop-filter: saturate(1.6) blur(16px); -webkit-backdrop-filter: saturate(1.6) blur(16px); box-shadow: 0 -8px 24px -16px rgba(22,24,39,.25); }
+#abas button { flex-direction: column; gap: 2px; padding: 6px 2px 4px; border-radius: 14px; font-size: 11.5px; font-weight: 700; color: var(--muted); background: none; box-shadow: none; }
+#abas button .ti { position: relative; font-size: 21px; line-height: 1; width: 52px; height: 30px; display: grid; place-items: center; border-radius: 99px; transition: background .2s; }
+#abas button.on { color: var(--terra); background: none; box-shadow: none; }
+#abas button.on .ti { background: var(--terra-soft); }
+#abas button .n { position: absolute; top: -4px; right: 2px; font-size: 10.5px; line-height: 17px; min-width: 17px; padding: 0 5px; background: var(--terra); color: #fff; border-radius: 99px; font-weight: 800; }
+.doca { background: none; padding: 0; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); left: auto; right: max(16px, env(safe-area-inset-right, 0px)); }
+.doca .btn { width: auto; max-width: none; margin: 0; padding: 14px 20px 14px 14px; border-radius: 99px; font-size: 16px; box-shadow: 0 16px 30px -12px rgba(255,61,127,.75); }
+.toast { bottom: calc(150px + env(safe-area-inset-bottom, 0px)); }
+.rodape { margin-bottom: 10px; }
+@media (min-width: 700px) { #abas { left: 50%; right: auto; transform: translateX(-50%); bottom: 14px; width: 460px; border-radius: 22px; } }
 </style>
 </head>
 <body>
@@ -318,10 +397,10 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--mel); outli
   </section>
 
   <nav class="abas" id="abas">
-    <button type="button" data-a="comprar" class="on">🛒 Comprar <span class="n" id="nComprar" hidden></span></button>
-    <button type="button" data-a="estoque">🏠 Estoque</button>
-    <button type="button" data-a="menu">🍽 Cardápio</button>
-    <button type="button" data-a="hist">🕓 Histórico</button>
+    <button type="button" data-a="comprar" class="on"><span class="ti">🛒<span class="n" id="nComprar" hidden></span></span><span class="tl">Comprar</span></button>
+    <button type="button" data-a="estoque"><span class="ti">🏠</span><span class="tl">Estoque</span></button>
+    <button type="button" data-a="menu"><span class="ti">🍽️</span><span class="tl">Cardápio</span></button>
+    <button type="button" data-a="hist"><span class="ti">🕓</span><span class="tl">Histórico</span></button>
   </nav>
 
   <section id="vComprar" style="display:flex;flex-direction:column;gap:14px"></section>
@@ -338,7 +417,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--mel); outli
   <p class="rodape" id="rodape"></p>
 </main>
 
-<div class="doca" id="doca" hidden><button class="btn" id="btAdd" type="button"><span class="mais">+</span>Adicionar à lista</button></div>
+<div class="doca" id="doca" hidden><button class="btn" id="btAdd" type="button" aria-label="Adicionar à lista"><span class="mais">+</span><span class="tx">Adicionar</span></button></div>
 
 <div class="fundo" id="fAdd" hidden role="dialog" aria-modal="true" aria-labelledby="tAdd">
   <div class="folha">
@@ -393,6 +472,9 @@ const CATS = [
   ['Farmácia', '💊'], ['Pet', '🐾'], ['Casa', '💡'], ['Outros', '🛍️']
 ];
 const EMO = Object.fromEntries(CATS);
+const LOJAS = [['mercado', 'Mercado', '🛒'], ['feira', 'Feira', '🥬'], ['atacado', 'Atacado', '📦'], ['padaria', 'Padaria', '🥖'], ['farmacia', 'Farmácia', '💊'], ['pet', 'Pet shop', '🐾'], ['outro', 'Outro lugar', '🏬']];
+const LOJA = Object.fromEntries(LOJAS.map(([id, n, e]) => [id, { n, e }]));
+const lojaPadrao = (c) => ({ 'Hortifrúti': 'feira', 'Frutas': 'feira', 'Padaria': 'padaria', 'Farmácia': 'farmacia', 'Pet': 'pet' }[c] || 'mercado');
 const BASE = {
   'Hortifrúti': ['Alface', 'Rúcula', 'Agrião', 'Couve', 'Espinafre', 'Repolho', 'Tomate', 'Tomate-cereja', 'Cebola', 'Cebola roxa', 'Alho', 'Batata', 'Batata-doce', 'Mandioca', 'Cenoura', 'Beterraba', 'Abobrinha', 'Abóbora', 'Berinjela', 'Pimentão', 'Pepino', 'Brócolis', 'Couve-flor', 'Vagem', 'Chuchu', 'Quiabo', 'Milho verde', 'Cheiro-verde', 'Coentro', 'Manjericão', 'Hortelã', 'Gengibre', 'Cogumelo'],
   'Frutas': ['Banana', 'Maçã', 'Pera', 'Laranja', 'Limão', 'Tangerina', 'Mamão', 'Melão', 'Melancia', 'Abacaxi', 'Manga', 'Uva', 'Morango', 'Abacate', 'Kiwi', 'Maracujá', 'Goiaba'],
@@ -457,6 +539,7 @@ let EU = '', K = '', TOK = '';
 let meu = {}, log = [];
 let rem = {}, histRem = [];
 let menuMeu = {}, menuRem = {}; // chave -> { txt, quem, t, x? }
+let lojaSel = ls.get('desp-loja', ''), novoLoja = '';
 let aba = ls.get('desp-aba2', 'comprar'), catSel = '', histQuem = 'todos', ultSinc = 0, erroSinc = '';
 const hdr = (raw) => ({ Authorization: 'Bearer ' + TOK, Accept: raw ? 'application/vnd.github.raw' : 'application/vnd.github+json' });
 const migrarId = (id) => ANTIGOS[id] || id;
@@ -478,8 +561,8 @@ function estado() {
 const ordemCat = (c) => { const i = CATS.findIndex(([x]) => x === c); return i < 0 ? 99 : i; };
 function todos(comExcluidos) {
   const e = estado(), out = [];
-  for (const x of CAT) { const v = e[x.id] || {}; out.push({ id: x.id, n: x.n, c: x.c, q: v.q ?? null, b: v.b || 0, x: v.x || 0, t: v.t, por: v.por }); }
-  for (const [id, v] of Object.entries(e)) if (!CATI[id] && v.n) out.push({ id, n: v.n, c: v.c || 'Outros', q: v.q ?? null, b: v.b || 0, x: v.x || 0, t: v.t, por: v.por });
+  for (const x of CAT) { const v = e[x.id] || {}; out.push({ id: x.id, n: x.n, c: x.c, l: v.l || lojaPadrao(x.c), m: v.m || 0, p: v.p || 0, o: v.o || '', q: v.q ?? null, b: v.b || 0, x: v.x || 0, t: v.t, por: v.por }); }
+  for (const [id, v] of Object.entries(e)) if (!CATI[id] && v.n) out.push({ id, n: v.n, c: v.c || 'Outros', l: v.l || lojaPadrao(v.c || 'Outros'), m: v.m || 0, p: v.p || 0, o: v.o || '', q: v.q ?? null, b: v.b || 0, x: v.x || 0, t: v.t, por: v.por });
   return comExcluidos ? out : out.filter((x) => !x.x);
 }
 const paraComprar = () => todos().filter((x) => x.b > 0).sort((a, b) => ordemCat(a.c) - ordemCat(b.c) || a.n.localeCompare(b.n, 'pt'));
@@ -489,7 +572,9 @@ const item = (id) => todos(true).find((x) => x.id === id);
 function mudar(id, campos, reg) {
   const atual = item(id) || { id, q: null, b: 0, x: 0 };
   const ant = meu[id] ? { ...meu[id] } : null, antLog = log.length;
-  const r = { q: atual.q, b: atual.b, x: atual.x, ...campos, t: Date.now() };
+  const a1 = meu[id], a2 = rem[id], raw = (a1 && (!a2 || a1.t >= a2.t)) ? a1 : (a2 || {});
+  const { por: _p, t: _t, ...base } = raw;
+  const r = { ...base, q: atual.q, b: atual.b, x: atual.x, ...campos, t: Date.now() };
   if (!CATI[id]) { r.n = campos.n || atual.n; r.c = campos.c || atual.c || 'Outros'; }
   meu[id] = r;
   if (reg) { log.push({ i: id, k: reg.k, v: reg.v, t: r.t, n: r.n || atual.n }); if (log.length > 800) log = log.slice(-800); }
@@ -562,7 +647,9 @@ function stepper(valor, menos, mais, rot) {
   a.onclick = (e) => { e.stopPropagation(); menos(); }; b.onclick = (e) => { e.stopPropagation(); mais(); };
   s.append(a, v, b); return s;
 }
-function cartao(c) { const card = el('div', 'cartao'); const cab = el('div', 'cat'); cab.appendChild(el('span', 'em', EMO[c] || '🛍️')); cab.appendChild(document.createTextNode(c)); card.appendChild(cab); return card; }
+const CORCAT = { 'Hortifrúti': '#DCFCE7', 'Frutas': '#FFE4E6', 'Padaria': '#FEF3C7', 'Frios e laticínios': '#E0F2FE', 'Carnes e ovos': '#FEE2E2', 'Mercearia': '#FFEDD5', 'Matinais': '#F5E8DA', 'Temperos e molhos': '#FCE7F3', 'Bebidas': '#CFFAFE', 'Congelados': '#E0E7FF', 'Doces e lanches': '#FAE8FF', 'Limpeza': '#D1FAE5', 'Lavanderia': '#DBEAFE', 'Higiene': '#EDE9FE', 'Farmácia': '#FFE4E6', 'Pet': '#FEF9C3', 'Casa': '#E2E8F0', 'Outros': '#F1F5F9', 'Ideias de pratos': '#FEF3C7' };
+const R$ = (v) => 'R$ ' + v.toFixed(2).replace('.', ',');
+function cartao(c) { const card = el('div', 'cartao'); const cab = el('div', 'cat'); const em0 = el('span', 'em', EMO[c] || '🛍️'); em0.style.background = CORCAT[c] || '#F1F5F9'; cab.appendChild(em0); cab.appendChild(document.createTextNode(c)); card.appendChild(cab); return card; }
 function render() {
   if (!EU) return;
   const P = GENTE[EU];
@@ -575,9 +662,10 @@ function render() {
   $('hero').classList.toggle('abast', !n);
   $('quando').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
   $('heroT').textContent = n ? (n === 1 ? '1 item para comprar' : `${n} itens para comprar`) : 'Casa abastecida';
-  $('heroI').textContent = n ? 'No mercado, toque na bolinha: o item sai da lista e entra no estoque.' : 'Quando algo acabar, tire no estoque ou adicione à lista.';
+  $('heroI').textContent = n ? 'No mercado, toque na bolinha: sai da lista e entra no estoque.' : 'Quando algo acabar, é só tocar no + lá embaixo.';
   const m = $('heroMini'); m.replaceChildren();
   if (temCasa) m.appendChild(el('span', null, `🏠 ${temCasa} em casa`)); if (acabou) m.appendChild(el('span', null, `🔴 ${acabou} acabaram`));
+  const quase = tudo.filter((x) => x.q > 0 && x.m > 0 && x.q <= x.m).length; if (quase) m.appendChild(el('span', null, `⚠️ ${quase} acabando`));
   $('heroN').textContent = n || '✓';
   ondas($('ondaHero'), 7, 60, '#ffffff', 0.5);
   const nb = $('nComprar'); nb.hidden = !n; nb.textContent = n;
@@ -587,10 +675,31 @@ function render() {
   $('rodape').textContent = 'Paulo e Luis · a lista é a mesma nos dois celulares';
 }
 function desenharComprar(lista) {
+  lista = lista.slice();
   const V = $('vComprar'); V.replaceChildren();
+  const acab = todos().filter((x) => !x.b && x.m > 0 && x.q != null && x.q <= x.m);
+  if (acab.length) {
+    const box = el('div', 'acabando'); box.appendChild(el('b', null, `⚠️ Acabando (${acab.length})`));
+    const d = el('div');
+    for (const x of acab) { const bb = el('button', null, `${x.n} · ${x.q} em casa  + lista`); bb.type = 'button'; bb.onclick = () => { const nb = Math.max(1, x.m - x.q + 1); const u = mudar(x.id, { b: nb }, { k: 'lista', v: nb }); toast(x.n + ' foi para a lista', u); }; d.appendChild(bb); }
+    box.appendChild(d); V.appendChild(box);
+  }
   if (!lista.length) { const c = el('div', 'cartao'); const v = el('div', 'vazio'); v.appendChild(el('span', 'em', '🧺')); v.appendChild(el('b', null, 'Nada para comprar')); v.appendChild(document.createTextNode('Use o botão lá embaixo ou tire do estoque o que acabar.')); c.appendChild(v); V.appendChild(c); return; }
+  const lojasUsadas = LOJAS.filter(([id]) => lista.some((x) => x.l === id));
+  if (lojaSel && !lojasUsadas.some(([id]) => id === lojaSel)) lojaSel = '';
+  if (lojasUsadas.length > 1) {
+    const ch = el('div', 'chips lojas');
+    const add = (id, txt) => { const b = el('button', lojaSel === id ? 'on' : '', txt); b.type = 'button'; b.onclick = () => { lojaSel = id; ls.set('desp-loja', id); render(); }; ch.appendChild(b); };
+    add('', `Todos os lugares (${lista.length})`);
+    for (const [id, nm, e] of lojasUsadas) add(id, `${e} ${nm} (${lista.filter((x) => x.l === id).length})`);
+    V.appendChild(ch);
+  }
+  if (lojaSel) lista = lista.filter((x) => x.l === lojaSel);
+  const comPreco = lista.filter((x) => x.p > 0), total = comPreco.reduce((s, x) => s + x.p * x.b, 0);
+  if (comPreco.length) { const tt = el('div', 'total'); tt.appendChild(el('span', null, 'Total estimado' + (comPreco.length < lista.length ? ` (${comPreco.length} de ${lista.length} com preço)` : ''))); tt.appendChild(el('b', null, R$(total))); V.appendChild(tt); }
   const ac = el('div', 'acoes');
-  const bc = el('button', null, '📋 Copiar lista'); bc.type = 'button'; bc.onclick = () => copiarLista(lista, false);
+  const quaisLoja = lojaSel ? ' ' + LOJA[lojaSel].n.toLowerCase() : '';
+  const bc = el('button', null, '📋 Copiar lista' + quaisLoja); bc.type = 'button'; bc.onclick = () => copiarLista(lista, false);
   const bw = el('button', null, '💬 Mandar no WhatsApp'); bw.type = 'button'; bw.onclick = () => copiarLista(lista, true);
   ac.append(bc, bw); V.appendChild(ac);
   const by = {}; for (const x of lista) (by[x.c] = by[x.c] || []).push(x);
@@ -601,7 +710,8 @@ function desenharComprar(lista) {
       const ck = el('button', 'check'); ck.type = 'button'; ck.setAttribute('aria-label', 'Comprei ' + x.n);
       ck.onclick = () => { r.classList.add('feito'); setTimeout(() => comprou(x), 260); };
       const tx = el('div', 'tx'); tx.appendChild(el('b', null, x.n));
-      tx.appendChild(el('small', null, 'em casa: ' + (x.q == null ? '–' : x.q) + (x.por ? ' · ' + quem(x.por) + ' ' + quando(x.t) : '')));
+      if (x.o) tx.appendChild(el('small', 'obs', '📝 ' + x.o));
+      tx.appendChild(el('small', null, (lojaSel ? '' : LOJA[x.l].e + ' ' + LOJA[x.l].n + ' · ') + (x.p ? R$(x.p * x.b) + ' · ' : '') + 'em casa: ' + (x.q == null ? '–' : x.q) + (x.por ? ' · ' + quem(x.por) : '')));
       tx.onclick = () => abrirItem(x.id);
       r.append(ck, tx, stepper(x.b, () => mudarCompra(x, -1), () => mudarCompra(x, 1), x.n));
       card.appendChild(r);
@@ -611,7 +721,7 @@ function desenharComprar(lista) {
 }
 async function copiarLista(lista, zap) {
   const by = {}; for (const x of lista) (by[x.c] = by[x.c] || []).push(x);
-  const t = '🛒 Lista de mercado\n' + Object.keys(by).map((c) => `\n${EMO[c] || ''} ${c}\n` + by[c].map((x) => `• ${x.b}× ${x.n}`).join('\n')).join('\n');
+  const t = (lojaSel ? LOJA[lojaSel].e + ' Lista · ' + LOJA[lojaSel].n : '🛒 Lista de compras') + '\n' + Object.keys(by).map((c) => `\n${EMO[c] || ''} ${c}\n` + by[c].map((x) => `• ${x.b}× ${x.n}` + (x.o ? ` (${x.o})` : '')).join('\n')).join('\n');
   if (zap) { location.href = 'https://wa.me/?text=' + encodeURIComponent(t); return; }
   try { await navigator.clipboard.writeText(t); toast('Lista copiada'); } catch (e) { toast('Não deu para copiar neste celular'); }
 }
@@ -638,7 +748,8 @@ function desenharEstoque() {
         bb.onclick = () => { const u = mudar(x.id, { x: 0 }, { k: 'volta' }); toast(x.n + ' voltou', u); };
         r.append(tx, bb); card.appendChild(r); continue;
       }
-      const sm = el('small', x.q === 0 ? 'acab' : x.q > 0 ? 'ok' : null, x.q === 0 ? 'acabou' : x.q > 0 ? 'em casa' : 'não contado');
+      const quase = x.q > 0 && x.m > 0 && x.q <= x.m;
+      const sm = el('small', x.q === 0 ? 'acab' : quase ? 'quase' : x.q > 0 ? 'ok' : null, x.q === 0 ? 'acabou' : quase ? 'acabando' : x.q > 0 ? 'em casa' : 'não contado');
       tx.appendChild(sm); r.appendChild(tx);
       r.appendChild(stepper(x.q, () => mudarQtd(x, -1), () => mudarQtd(x, 1), x.n));
       const cr = el('button', 'carrinho' + (x.b ? ' on' : ''), '🛒'); cr.type = 'button'; cr.setAttribute('aria-label', x.b ? 'Tirar da lista' : 'Pôr na lista');
@@ -654,6 +765,8 @@ const FRASE = {
   lista: (v) => v ? ['pôs ' + v + '× na lista', 'falta'] : ['tirou da lista', 'tem'],
   comprou: (v) => ['comprou ' + (v || '') + '×', 'comprou'],
   menu: (v) => [v || 'mudou o cardápio:', 'tem'],
+  loja: (v) => ['mudou para comprar em ' + v + ':', 'tem'],
+  preco: (v) => ['anotou o preço ' + v + ' de', 'tem'],
   exclui: () => ['excluiu', 'falta'], volta: () => ['recolocou', 'tem'], novo: () => ['criou o item', 'tem']
 };
 function desenharHist() {
@@ -694,6 +807,18 @@ function abrirItem(id) {
   } else {
     const c1 = el('div', 'cx'); const t1 = el('div'); t1.appendChild(el('b', null, '🏠 Em casa')); t1.appendChild(el('small', null, 'quantos tem agora')); c1.append(t1, stepper(x.q, () => mudarQtd(item(id), -1), () => mudarQtd(item(id), 1), 'em casa')); D.appendChild(c1);
     const c2 = el('div', 'cx'); const t2 = el('div'); t2.appendChild(el('b', null, '🛒 Comprar')); t2.appendChild(el('small', null, x.b ? 'está na lista' : 'fora da lista')); c2.append(t2, stepper(x.b, () => mudarCompra(item(id), -1), () => mudarCompra(item(id), 1), 'para comprar')); D.appendChild(c2);
+    const c4 = el('div', 'cx'); const t4 = el('div'); t4.appendChild(el('b', null, '⚠️ Avisar quando tiver')); t4.appendChild(el('small', null, x.m ? 'aparece em "Acabando" com ' + x.m + ' ou menos' : 'sem aviso'));
+    c4.append(t4, stepper(x.m || 0, () => { const v = Math.max(0, (item(id).m || 0) - 1); mudar(id, { m: v }, null); }, () => { const v = (item(id).m || 0) + 1; mudar(id, { m: v }, null); }, 'mínimo')); D.appendChild(c4);
+    const c5 = el('div', 'cx campos');
+    const lp = el('label'); lp.appendChild(el('b', null, '💰 Preço (un.)')); const ip = el('input'); ip.type = 'text'; ip.inputMode = 'decimal'; ip.placeholder = '0,00'; ip.value = x.p ? x.p.toFixed(2).replace('.', ',') : ''; lp.appendChild(ip);
+    const lo = el('label'); lo.appendChild(el('b', null, '📝 Marca / obs.')); const io = el('input'); io.type = 'text'; io.placeholder = 'ex.: Italac, 1 L'; io.value = x.o || ''; lo.appendChild(io);
+    ip.onchange = () => { const v = parseFloat(ip.value.replace(/[^0-9,.]/g, '').replace(',', '.')) || 0; if (v !== (item(id).p || 0)) { mudar(id, { p: Math.round(v * 100) / 100 }, { k: 'preco', v: R$(v) }); toast('Preço salvo'); } };
+    io.onchange = () => { const v = io.value.trim(); if (v !== (item(id).o || '')) { mudar(id, { o: v }, null); toast('Anotado'); } };
+    c5.append(lp, lo); D.appendChild(c5);
+    const c3 = el('div', 'cx'); c3.style.cssText = 'flex-direction:column;align-items:stretch'; const t3 = el('div'); t3.appendChild(el('b', null, '🏬 Onde comprar')); c3.appendChild(t3);
+    const ce = el('div', 'catEsc'); ce.style.marginTop = '4px';
+    for (const [lid, nm, e] of LOJAS) { const bb = el('button', x.l === lid ? 'on' : '', e + ' ' + nm); bb.type = 'button'; bb.onclick = () => { if (x.l !== lid) { const u = mudar(id, { l: lid }, { k: 'loja', v: nm }); toast(x.n + ': comprar em ' + nm, u); } }; ce.appendChild(bb); }
+    c3.appendChild(ce); D.appendChild(c3);
     const rod = el('div', 'rodap');
     if (x.b) { const bc = el('button', 'btn verde', `✓ Comprei ${x.b}, guardar no estoque`); bc.type = 'button'; bc.onclick = () => { comprou(item(id)); fechar(); }; rod.appendChild(bc); }
     const bx = el('button', 'btn perigo', '🗑 Excluir item'); bx.type = 'button'; bx.onclick = () => { const u = mudar(id, { x: 1, b: 0 }, { k: 'exclui' }); fechar(); toast(x.n + ' excluído', u); }; rod.appendChild(bx);
@@ -731,7 +856,7 @@ function desenharOpcoes() {
     for (const [c, e] of CATS) { const bb = el('button', c === novoCat ? 'on' : '', e + ' ' + c); bb.type = 'button'; bb.onclick = () => { novoCat = c; desenharOpcoes(); }; ce.appendChild(bb); }
     box.appendChild(ce);
     const nb = el('button', 'novo', `+ Criar "${txt}" e pôr na lista`); nb.type = 'button';
-    nb.onclick = () => { const n = txt.charAt(0).toUpperCase() + txt.slice(1); const id = 'x-' + slug(n); const u = mudar(id, { n, c: novoCat, q: 0, b: 1, x: 0 }, { k: 'novo' }); toast(n + ' criado e na lista', u); $('buscaAdd').value = ''; novoCat = 'Outros'; desenharOpcoes(); };
+    nb.onclick = () => { const n = txt.charAt(0).toUpperCase() + txt.slice(1); const id = 'x-' + slug(n); const u = mudar(id, { n, c: novoCat, l: lojaPadrao(novoCat), q: 0, b: 1, x: 0 }, { k: 'novo' }); toast(n + ' criado e na lista', u); $('buscaAdd').value = ''; novoCat = 'Outros'; desenharOpcoes(); };
     box.appendChild(nb); O.appendChild(box);
   }
 }
