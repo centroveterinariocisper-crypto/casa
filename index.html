@@ -408,6 +408,38 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: man
 #abas { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #fff !important; }
 .hero .mini span { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 #entrada .bolhas i { filter: none !important; }
+
+/* ===== histórico: apagar ===== */
+.btLimpar { align-self: flex-end; border: 1.5px solid var(--line); background: var(--paper); border-radius: 99px; padding: 9px 14px; font-weight: 700; font-size: 14px; color: var(--muted); }
+.hist .btApg { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; border: 0; background: var(--sand); color: var(--muted); font-size: 13px; font-weight: 800; }
+.hist .tx small.apg { display: block; color: #C2410C; font-size: 12px; font-weight: 600; margin-top: 2px; }
+.apNota { margin: 0; background: #FFF7ED; border: 1px solid #FED7AA; color: #9A3412; border-radius: 14px; padding: 10px 12px; font-size: 13.5px; }
+.linha .tx small.nt { color: var(--faint, #9CA3AF); }
+#btZerar { width: 100%; }
+#btZerar[hidden] { display: none; }
+
+/* ===== herói "Casa abastecida" moderno ===== */
+.hero .selo, .hero .stats { display: none; }
+.hero.abast { padding: 22px 20px 18px; background:
+  radial-gradient(70% 80% at 0% 0%, rgba(167,243,208,.9) 0%, transparent 60%),
+  radial-gradient(60% 70% at 100% 0%, rgba(103,232,249,.75) 0%, transparent 55%),
+  radial-gradient(80% 80% at 90% 120%, #064E3B 0%, transparent 60%),
+  linear-gradient(140deg, #10B981 0%, #059669 45%, #0F766E 100%);
+  box-shadow: 0 26px 44px -24px rgba(5,150,105,.8), inset 0 1px 0 rgba(255,255,255,.35); }
+.hero.abast::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,.22) 1.2px, transparent 1.3px); background-size: 16px 16px;
+  -webkit-mask-image: linear-gradient(200deg, #000 0%, transparent 55%); mask-image: linear-gradient(200deg, #000 0%, transparent 55%); }
+.hero.abast .num, .hero.abast svg#ondaHero, .hero.abast .mini { display: none; }
+.hero.abast h2 { font-size: 36px; line-height: .98; letter-spacing: -.035em; padding-right: 84px; text-shadow: 0 2px 12px rgba(6,78,59,.25); }
+.hero.abast p.info { max-width: 32ch; }
+.hero.abast .quando { display: inline-block; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.3); border-radius: 99px; padding: 5px 11px; opacity: 1; letter-spacing: .1em; font-size: 11px; }
+.hero.abast .selo { display: grid; place-items: center; position: absolute; right: 18px; top: 18px; width: 66px; height: 66px; border-radius: 22px; background: #fff; box-shadow: 0 14px 26px -10px rgba(6,78,59,.65), 0 0 0 6px rgba(255,255,255,.18); transform: rotate(-6deg); }
+.hero.abast .selo svg { width: 40px; height: 40px; }
+.hero.abast .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+.hero.abast .stats div { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28); border-radius: 18px; padding: 10px 12px 9px; display: flex; flex-direction: column; gap: 1px; }
+.hero.abast .stats .ic { font-size: 15px; }
+.hero.abast .stats b { font-size: 24px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.hero.abast .stats small { font-size: 12px; font-weight: 600; opacity: .92; }
 </style>
 </head>
 <body>
@@ -466,6 +498,8 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: man
     <p class="info" id="heroI"></p>
     <div class="mini" id="heroMini"></div>
     <div class="num" id="heroN"></div>
+    <div class="selo" aria-hidden="true"><svg viewBox="0 0 48 48"><defs><linearGradient id="gSelo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#0D9488"/></linearGradient></defs><path d="M13 25.5l7.2 7.2L35.5 17" fill="none" stroke="url(#gSelo)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="stats" id="heroStats"></div>
     <svg id="ondaHero" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"></svg>
   </section>
 
@@ -479,6 +513,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: man
   <section id="vComprar" style="display:flex;flex-direction:column;gap:14px"></section>
   <section id="vEstoque" hidden style="display:flex;flex-direction:column;gap:14px">
     <div class="estAcoes"><button class="btn claro" type="button" id="btAddEst">＋ Adicionar item</button><button class="btn claro" type="button" id="btEditEst">✏️ Editar / excluir</button></div>
+    <button class="btn perigo" type="button" id="btZerar" hidden>↺ Começar do zero (nada em casa)</button>
     <div class="busca"><span>🔎</span><input id="busca" type="search" placeholder="Procurar no estoque" aria-label="Procurar"></div>
     <div class="chips" id="chips"></div>
     <div id="listaEst" style="display:flex;flex-direction:column;gap:14px"></div>
@@ -645,7 +680,7 @@ async function vaga(senha, conteudo) { const salt = crypto.getRandomValues(new U
 // cada item: { q: quantos tem em casa (null = não sei), b: quantos comprar (0 = fora da lista), x: 1 se excluído, t, n?, c? }
 let EU = '', K = '', TOK = '';
 let meu = {}, log = [];
-let rem = {}, histRem = [];
+let rem = {}, histRem = [], apMeu = [], apRem = [];
 let menuMeu = {}, menuRem = {}; // chave -> { txt, quem, t, x? }
 let lojaSel = ls.get('desp-loja', ''), novoLoja = '';
 let aba = ls.get('desp-aba2', 'comprar'), catSel = '', histQuem = 'todos', ultSinc = 0, erroSinc = '';
@@ -657,9 +692,10 @@ function carregarMeu() {
   if (!meu) { let v1 = {}; try { v1 = JSON.parse(ls.get('desp-meu-' + EU, '{}')) || {}; } catch (e) {} meu = daV1(v1); }
   try { log = JSON.parse(ls.get('desp2-log-' + EU, 'null')); } catch (e) { log = null; }
   try { menuMeu = JSON.parse(ls.get('desp2-menu-' + EU, '{}')) || {}; } catch (e) { menuMeu = {}; }
+  try { apMeu = JSON.parse(ls.get('desp2-ap-' + EU, '[]')) || []; } catch (e) { apMeu = []; }
   if (!log) { let v1 = []; try { v1 = JSON.parse(ls.get('desp-log-' + EU, '[]')) || []; } catch (e) {} log = v1.map((x) => ({ i: migrarId(x.i), k: 'lista', v: x.f ? 1 : 0, t: x.t, n: x.n })); }
 }
-function salvarMeu() { ls.set('desp2-meu-' + EU, JSON.stringify(meu)); ls.set('desp2-log-' + EU, JSON.stringify(log)); ls.set('desp2-menu-' + EU, JSON.stringify(menuMeu)); }
+function salvarMeu() { ls.set('desp2-meu-' + EU, JSON.stringify(meu)); ls.set('desp2-log-' + EU, JSON.stringify(log)); ls.set('desp2-menu-' + EU, JSON.stringify(menuMeu)); ls.set('desp2-ap-' + EU, JSON.stringify(apMeu)); }
 function estado() {
   const out = {};
   for (const [id, v] of Object.entries(rem)) out[id] = v;
@@ -669,8 +705,8 @@ function estado() {
 const ordemCat = (c) => { const i = CATS.findIndex(([x]) => x === c); return i < 0 ? 99 : i; };
 function todos(comExcluidos) {
   const e = estado(), out = [];
-  for (const x of CAT) { const v = e[x.id] || {}; out.push({ id: x.id, n: x.n, c: x.c, l: v.l || lojaPadrao(x.c), m: v.m || 0, p: v.p || 0, o: v.o || '', q: v.q ?? null, b: v.b || 0, x: v.x || 0, t: v.t, por: v.por }); }
-  for (const [id, v] of Object.entries(e)) if (!CATI[id] && v.n) out.push({ id, n: v.n, c: v.c || 'Outros', l: v.l || lojaPadrao(v.c || 'Outros'), m: v.m || 0, p: v.p || 0, o: v.o || '', q: v.q ?? null, b: v.b || 0, x: v.x || 0, t: v.t, por: v.por });
+  for (const x of CAT) { const v = e[x.id] || {}; out.push({ id: x.id, n: x.n, c: x.c, l: v.l || lojaPadrao(x.c), m: v.m || 0, p: v.p || 0, o: v.o || '', q: v.q ?? null, a: v.a || 0, b: v.b || 0, x: v.x || 0, t: v.t, por: v.por }); }
+  for (const [id, v] of Object.entries(e)) if (!CATI[id] && v.n) out.push({ id, n: v.n, c: v.c || 'Outros', l: v.l || lojaPadrao(v.c || 'Outros'), m: v.m || 0, p: v.p || 0, o: v.o || '', q: v.q ?? null, a: v.a || 0, b: v.b || 0, x: v.x || 0, t: v.t, por: v.por });
   return comExcluidos ? out : out.filter((x) => !x.x);
 }
 const paraComprar = () => todos().filter((x) => x.b > 0).sort((a, b) => ordemCat(a.c) - ordemCat(b.c) || a.n.localeCompare(b.n, 'pt'));
@@ -682,7 +718,7 @@ function mudar(id, campos, reg) {
   const ant = meu[id] ? { ...meu[id] } : null, antLog = log.length;
   const a1 = meu[id], a2 = rem[id], raw = (a1 && (!a2 || a1.t >= a2.t)) ? a1 : (a2 || {});
   const { por: _p, t: _t, ...base } = raw;
-  const r = { ...base, q: atual.q, b: atual.b, x: atual.x, ...campos, t: Date.now() };
+  const r = { ...base, q: atual.q, a: atual.a || 0, b: atual.b, x: atual.x, ...campos, t: Date.now() };
   if (!CATI[id]) { r.n = campos.n || atual.n; r.c = campos.c || atual.c || 'Outros'; }
   meu[id] = r;
   if (reg) { log.push({ i: id, k: reg.k, v: reg.v, t: r.t, n: r.n || atual.n }); if (log.length > 800) log = log.slice(-800); }
@@ -691,16 +727,17 @@ function mudar(id, campos, reg) {
 }
 function mudarQtd(x, d) {
   const q = Math.max(0, (x.q ?? 0) + d);
-  if (x.q === null && d < 0) return mudar(x.id, { q: 0, b: Math.max(x.b, 1) }, { k: 'qtd', v: 0 });
-  if (q === 0 && x.q !== 0) { const u = mudar(x.id, { q: 0, b: Math.max(x.b, 1) }, { k: 'qtd', v: 0 }); toast(x.n + ' acabou · foi para a lista', u); return; }
-  mudar(x.id, { q }, { k: 'qtd', v: q });
+  // só "acabou" quando tinha em casa e chegou a zero; o que nunca teve fica como "não tem"
+  if (x.q > 0 && q === 0) { const u = mudar(x.id, { q: 0, a: 1, b: Math.max(x.b, 1) }, { k: 'acabou' }); toast(x.n + ' acabou · foi para a lista', u); return; }
+  if (!(x.q > 0) && d < 0) return;
+  mudar(x.id, { q, a: 0 }, { k: 'qtd', v: q });
 }
 function mudarCompra(x, d) {
   const b = Math.max(0, x.b + d);
   const u = mudar(x.id, { b }, { k: 'lista', v: b });
   if (b === 0) toast(x.n + ' saiu da lista', u);
 }
-function comprou(x) { const u = mudar(x.id, { q: (x.q ?? 0) + x.b, b: 0 }, { k: 'comprou', v: x.b }); toast(`${x.b} ${x.n} guardado no estoque`, u); }
+function comprou(x) { const u = mudar(x.id, { q: (x.q ?? 0) + x.b, a: 0, b: 0 }, { k: 'comprou', v: x.b }); toast(`${x.b} ${x.n} guardado no estoque`, u); }
 let tToast = null;
 function toast(txt, desfazer) {
   document.querySelectorAll('.toast').forEach((x) => x.remove()); clearTimeout(tToast);
@@ -712,7 +749,7 @@ function toast(txt, desfazer) {
 // ===== sincronização
 async function puxar() {
   if (!TOK || !K) return;
-  const novo = {}, hist = [], mnu = {};
+  const novo = {}, hist = [], mnu = {}, aps = [];
   try {
     for (const p of Object.keys(GENTE)) {
       const r = await fetch(API + 'dados-' + p + '.json?t=' + Date.now(), { headers: hdr(true), cache: 'no-store' });
@@ -723,9 +760,10 @@ async function puxar() {
       const e2 = o.e2 || daV1(o.e);
       for (const [id, v] of Object.entries(e2)) if (!novo[id] || v.t > novo[id].t) novo[id] = { ...v, por: p };
       for (const [kk, v] of Object.entries(o.m || {})) if (!mnu[kk] || v.t > mnu[kk].t) mnu[kk] = { ...v, por: p };
+      for (const a of o.ap || []) aps.push({ ...a, por: p });
       for (const x of o.h2 || (o.h || []).map((y) => ({ i: migrarId(y.i), k: 'lista', v: y.f ? 1 : 0, t: y.t, n: y.n }))) hist.push({ ...x, por: p });
     }
-    rem = novo; histRem = hist; menuRem = mnu; ultSinc = Date.now(); erroSinc = '';
+    rem = novo; histRem = hist; menuRem = mnu; apRem = aps; ultSinc = Date.now(); erroSinc = '';
   } catch (e) { erroSinc = e.message; }
   render();
 }
@@ -736,7 +774,7 @@ async function enviar(tent) {
   try {
     const url = API + 'dados-' + EU + '.json';
     let sha; const g = await fetch(url + '?t=' + Date.now(), { headers: hdr(), cache: 'no-store' }); if (g.ok) sha = (await g.json()).sha;
-    const corpo = JSON.stringify(await cifrar(K, { e2: meu, h2: log, m: menuMeu }));
+    const corpo = JSON.stringify(await cifrar(K, { e2: meu, h2: log, m: menuMeu, ap: apMeu }));
     const r = await fetch(url, { method: 'PUT', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'despensa ' + EU, content: utf8b64(corpo), sha }) });
     if (r.status === 409 && !tent) return enviar(1);
     if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? 'chave' : 'rede');
@@ -750,7 +788,7 @@ function quando(t) { if (!t) return ''; const d = new Date(t), h = new Date(), o
 const quem = (p) => (GENTE[p] ? GENTE[p].nome : '');
 function stepper(valor, menos, mais, rot) {
   const s = el('div', 'stepper' + (valor === 0 ? ' zero' : ''));
-  const a = el('button', null, '−'), v = el('span', 'v' + (valor == null ? ' nd' : ''), valor == null ? '–' : String(valor)), b = el('button', null, '+');
+  const a = el('button', null, '−'), v = el('span', 'v' + (valor == null ? ' nd' : ''), valor == null ? '0' : String(valor)), b = el('button', null, '+');
   a.type = b.type = 'button'; a.setAttribute('aria-label', 'Menos ' + rot); b.setAttribute('aria-label', 'Mais ' + rot);
   a.onclick = (e) => { e.stopPropagation(); menos(); }; b.onclick = (e) => { e.stopPropagation(); mais(); };
   s.append(a, v, b); return s;
@@ -766,15 +804,17 @@ function render() {
   s.classList.toggle('ok', !erroSinc && !!ultSinc);
   s.querySelector('span').textContent = erroSinc === 'chave' ? 'chave do GitHub recusada' : erroSinc ? 'sem internet, salvo aqui' : ultSinc ? 'em dia · ' + hora(ultSinc) : 'conectando';
   const lista = paraComprar(), n = lista.length, tudo = todos();
-  const acabou = tudo.filter((x) => x.q === 0).length, temCasa = tudo.filter((x) => x.q > 0).length;
+  const acabou = tudo.filter((x) => x.a && !(x.q > 0)).length, temCasa = tudo.filter((x) => x.q > 0).length;
   $('hero').classList.toggle('abast', !n);
   $('quando').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
   $('heroT').textContent = n ? (n === 1 ? '1 item para comprar' : `${n} itens para comprar`) : 'Casa abastecida';
-  $('heroI').textContent = n ? 'No mercado, toque na bolinha: sai da lista e entra no estoque.' : 'Quando algo acabar, é só tocar no + lá embaixo.';
+  $('heroI').textContent = n ? 'No mercado, toque na bolinha: sai da lista e entra no estoque.' : 'Nada faltando na lista. Quando algo acabar, toque no + lá embaixo.';
   const m = $('heroMini'); m.replaceChildren();
   if (temCasa) m.appendChild(el('span', null, `🏠 ${temCasa} em casa`)); if (acabou) m.appendChild(el('span', null, `🔴 ${acabou} acabaram`));
   const quase = tudo.filter((x) => x.q > 0 && x.m > 0 && x.q <= x.m).length; if (quase) m.appendChild(el('span', null, `⚠️ ${quase} acabando`));
   $('heroN').textContent = n || '✓';
+  { const st = $('heroStats'); st.replaceChildren(); const quase2 = tudo.filter((x) => x.q > 0 && x.m > 0 && x.q <= x.m).length;
+    for (const [ic, v, t] of [['🏠', temCasa, 'em casa'], ['⚠️', quase2, 'acabando'], ['🔴', acabou, 'acabaram']]) { const d = el('div'); d.appendChild(el('span', 'ic', ic)); d.appendChild(el('b', null, String(v))); d.appendChild(el('small', null, t)); st.appendChild(d); } }
   ondas($('ondaHero'), 7, 60, '#ffffff', 0.5);
   const nb = $('nComprar'); nb.hidden = !n; nb.textContent = n;
   document.querySelectorAll('#abas button').forEach((b) => b.classList.toggle('on', b.dataset.a === aba));
@@ -835,16 +875,17 @@ async function copiarLista(lista, zap) {
 }
 let editEst = false;
 function desenharEstoque() {
+  $('btZerar').hidden = !editEst;
   $('btEditEst').classList.toggle('on', editEst); $('btEditEst').textContent = editEst ? '✓ Pronto' : '✏️ Editar / excluir';
   const q = norm($('busca').value.trim()), todosI = todos(), exc = todos(true).filter((x) => x.x);
   const ch = $('chips'); ch.replaceChildren();
   const add = (id, txt) => { const b = el('button', catSel === id ? 'on' : '', txt); b.type = 'button'; b.onclick = () => { catSel = catSel === id ? '' : id; desenharEstoque(); }; ch.appendChild(b); };
-  add('', 'Tudo'); add('__casa', '🏠 Tenho'); add('__acabou', '🔴 Acabou');
+  add('', 'Tudo'); add('__casa', '🏠 Tenho'); add('__acabou', '🔴 Acabou'); add('__nao', '⚪ Não tem');
   for (const [c, e] of CATS) if (todosI.some((x) => x.c === c)) add(c, e + ' ' + c);
   if (exc.length) add('__exc', `🗑 Excluídos (${exc.length})`);
   const L = $('listaEst'); L.replaceChildren();
   const base = catSel === '__exc' ? exc : todosI;
-  const lista = base.filter((x) => (!q || norm(x.n).includes(q)) && (!catSel || catSel === '__exc' || (catSel === '__casa' ? x.q > 0 : catSel === '__acabou' ? x.q === 0 : x.c === catSel)));
+  const lista = base.filter((x) => (!q || norm(x.n).includes(q)) && (!catSel || catSel === '__exc' || (catSel === '__casa' ? x.q > 0 : catSel === '__acabou' ? (x.a && !(x.q > 0)) : catSel === '__nao' ? (!x.a && !(x.q > 0)) : x.c === catSel)));
   if (!lista.length) { const c = el('div', 'cartao'); const v = el('div', 'vazio'); v.appendChild(el('b', null, 'Nada aqui')); v.appendChild(document.createTextNode(catSel === '__casa' ? 'Use o + nos itens para dizer quanto tem em casa.' : 'Toque em "Adicionar à lista" para criar um item novo.')); c.appendChild(v); L.appendChild(c); return; }
   const by = {}; for (const x of lista) (by[x.c] = by[x.c] || []).push(x);
   for (const c of Object.keys(by).sort((a, b) => ordemCat(a) - ordemCat(b))) {
@@ -865,7 +906,8 @@ function desenharEstoque() {
         r.append(tx, bb); card.appendChild(r); continue;
       }
       const quase = x.q > 0 && x.m > 0 && x.q <= x.m;
-      const sm = el('small', x.q === 0 ? 'acab' : quase ? 'quase' : x.q > 0 ? 'ok' : null, x.q === 0 ? 'acabou' : quase ? 'acabando' : x.q > 0 ? 'em casa' : 'não contado');
+      const acab = x.a && !(x.q > 0);
+      const sm = el('small', acab ? 'acab' : quase ? 'quase' : x.q > 0 ? 'ok' : 'nt', acab ? 'acabou' : quase ? 'acabando' : x.q > 0 ? 'em casa' : 'não tem');
       tx.appendChild(sm); r.appendChild(tx);
       r.appendChild(stepper(x.q, () => mudarQtd(x, -1), () => mudarQtd(x, 1), x.n));
       const cr = el('button', 'carrinho' + (x.b ? ' on' : ''), '🛒'); cr.type = 'button'; cr.setAttribute('aria-label', x.b ? 'Tirar da lista' : 'Pôr na lista');
@@ -877,35 +919,62 @@ function desenharEstoque() {
   }
 }
 const FRASE = {
-  qtd: (v) => v === 0 ? ['marcou que acabou', 'falta'] : ['deixou ' + v + ' em casa de', 'tem'],
+  qtd: (v) => v === 0 ? ['marcou que não tem', 'falta'] : ['deixou ' + v + ' em casa de', 'tem'],
   lista: (v) => v ? ['pôs ' + v + '× na lista', 'falta'] : ['tirou da lista', 'tem'],
   comprou: (v) => ['comprou ' + (v || '') + '×', 'comprou'],
   menu: (v) => [v || 'mudou o cardápio:', 'tem'],
   loja: (v) => ['mudou para comprar em ' + v + ':', 'tem'],
   preco: (v) => ['anotou o preço ' + v + ' de', 'tem'],
-  exclui: () => ['excluiu', 'falta'], volta: () => ['recolocou', 'tem'], novo: () => ['criou o item', 'tem']
+  exclui: () => ['excluiu', 'falta'], volta: () => ['recolocou', 'tem'], novo: () => ['criou o item', 'tem'],
+  acabou: () => ['marcou que acabou', 'falta'], zerou: () => ['começou o estoque do zero', 'tem']
 };
+const chaveH = (x) => x.por + '|' + x.t + '|' + x.i + '|' + x.k;
+function apagarHist(lista) {
+  const t = Date.now(), novos = lista.map((x) => ({ c: chaveH(x), t, o: x }));
+  apMeu = apMeu.concat(novos).slice(-3000); salvarMeu(); render(); enviarDepois();
+  toast(lista.length === 1 ? 'Apagado do histórico' : lista.length + ' apagados do histórico', () => { const cs = new Set(novos.map((z) => z.c)); apMeu = apMeu.filter((z) => !(z.t === t && cs.has(z.c))); salvarMeu(); render(); enviarDepois(); });
+}
+function linhaHist(card, x, extra) {
+  const G = GENTE[x.por] || { nome: '?', c1: '#999', c2: '#bbb' };
+  const r = el('div', 'hist'); r.appendChild(el('span', 'hora', hora(x.t)));
+  const av = avDe(el('span', 'av', G.nome[0]), x.por); av.style.setProperty('--c1', G.c1); av.style.setProperty('--c2', G.c2); r.appendChild(av);
+  const [frase] = (FRASE[x.k] || FRASE.lista)(x.v);
+  const nome = (CATI[x.i] && CATI[x.i].n) || x.n || x.i;
+  const tx = el('div', 'tx'); tx.appendChild(el('b', null, G.nome + ' ')); tx.appendChild(document.createTextNode(frase + ' ')); if (x.k !== 'menu' && x.k !== 'zerou') tx.appendChild(el('b', null, nome));
+  if (extra) tx.appendChild(el('small', 'apg', extra));
+  r.appendChild(tx); card.appendChild(r); return r;
+}
+function cabDia(card, t, st) {
+  const d = new Date(t), hj = new Date(), on = new Date(); on.setDate(hj.getDate() - 1);
+  const rot = d.toDateString() === hj.toDateString() ? 'Hoje' : d.toDateString() === on.toDateString() ? 'Ontem' : d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+  if (rot !== st.dia) { card.appendChild(el('div', 'cat', rot)); st.dia = rot; }
+}
 function desenharHist() {
   const qx = $('histQuem'); qx.replaceChildren();
-  for (const [id, nome] of [['todos', 'Os dois'], ['paulo', 'Paulo'], ['luis', 'Luis']]) { const b = el('button', id === histQuem ? 'on' : '', nome); b.type = 'button'; b.onclick = () => { histQuem = id; desenharHist(); }; qx.appendChild(b); }
+  const ops = [['todos', 'Os dois'], ['paulo', 'Paulo'], ['luis', 'Luis']]; if (EU === 'paulo') ops.push(['__ap', '🗑 Apagados']);
+  if (histQuem === '__ap' && EU !== 'paulo') histQuem = 'todos';
+  for (const [id, nome] of ops) { const b = el('button', id === histQuem ? 'on' : '', nome); b.type = 'button'; b.onclick = () => { histQuem = id; desenharHist(); }; qx.appendChild(b); }
   const V = $('histLista'); V.replaceChildren();
   const vistos = new Set(), hs = [];
-  for (const x of histRem.concat(log.map((y) => ({ ...y, por: EU })))) { const k = x.por + x.t + x.i + x.k; if (!vistos.has(k)) { vistos.add(k); hs.push(x); } }
-  const lista = hs.filter((x) => histQuem === 'todos' || x.por === histQuem).sort((a, b) => b.t - a.t);
-  const card = el('div', 'cartao');
+  for (const x of histRem.concat(log.map((y) => ({ ...y, por: EU })))) { const k = chaveH(x); if (!vistos.has(k)) { vistos.add(k); hs.push(x); } }
+  const apTodos = [], apV = new Set();
+  for (const a of apRem.concat(apMeu.map((z) => ({ ...z, por: EU })))) { const k = a.por + a.t + a.c; if (!apV.has(k)) { apV.add(k); apTodos.push(a); } }
+  const apagadas = new Map(); for (const a of apTodos) if (!apagadas.has(a.c)) apagadas.set(a.c, a);
+  const card = el('div', 'cartao'); const st = { dia: '' };
+  if (histQuem === '__ap') {
+    const lista = apTodos.filter((a) => a.o).sort((a, b) => b.t - a.t);
+    V.appendChild(el('p', 'nota apNota', '🔒 Só você vê esta aba. Aqui fica o que foi apagado do histórico.'));
+    if (!lista.length) { const v = el('div', 'vazio'); v.appendChild(el('span', 'em', '🗑')); v.appendChild(el('b', null, 'Nada apagado')); card.appendChild(v); V.appendChild(card); return; }
+    for (const a of lista.slice(0, 400)) { cabDia(card, a.t, st); const G = GENTE[a.por] || { nome: '?' }; linhaHist(card, a.o, 'apagado por ' + G.nome + ' em ' + new Date(a.t).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }) + ', ' + hora(a.t) + ' · era de ' + new Date(a.o.t).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })); }
+    V.appendChild(card); return;
+  }
+  const lista = hs.filter((x) => !apagadas.has(chaveH(x)) && (histQuem === 'todos' || x.por === histQuem)).sort((a, b) => b.t - a.t);
   if (!lista.length) { const v = el('div', 'vazio'); v.appendChild(el('span', 'em', '🕓')); v.appendChild(el('b', null, 'Nada ainda')); v.appendChild(document.createTextNode('Tudo o que vocês fizerem aparece aqui.')); card.appendChild(v); V.appendChild(card); return; }
-  let dia = '';
+  const lim = el('button', 'btLimpar', '🧹 Limpar histórico' + (histQuem === 'todos' ? '' : ' de ' + GENTE[histQuem].nome)); lim.type = 'button'; lim.onclick = () => apagarHist(lista); V.appendChild(lim);
   for (const x of lista.slice(0, 400)) {
-    const d = new Date(x.t), hj = new Date(), on = new Date(); on.setDate(hj.getDate() - 1);
-    const rot = d.toDateString() === hj.toDateString() ? 'Hoje' : d.toDateString() === on.toDateString() ? 'Ontem' : d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-    if (rot !== dia) { card.appendChild(el('div', 'cat', rot)); dia = rot; }
-    const G = GENTE[x.por] || { nome: '?', c1: '#999', c2: '#bbb' };
-    const r = el('div', 'hist'); r.appendChild(el('span', 'hora', hora(x.t)));
-    const av = avDe(el('span', 'av', G.nome[0]), x.por); av.style.setProperty('--c1', G.c1); av.style.setProperty('--c2', G.c2); r.appendChild(av);
-    const [frase, tag] = (FRASE[x.k] || FRASE.lista)(x.v);
-    const nome = (CATI[x.i] && CATI[x.i].n) || x.n || x.i;
-    const tx = el('div', 'tx'); tx.appendChild(el('b', null, G.nome + ' ')); tx.appendChild(document.createTextNode(frase + ' ')); if (x.k !== 'menu') tx.appendChild(el('b', null, nome));
-    r.appendChild(tx); card.appendChild(r);
+    cabDia(card, x.t, st);
+    const r = linhaHist(card, x);
+    const bx = el('button', 'btApg', '✕'); bx.type = 'button'; bx.setAttribute('aria-label', 'Apagar do histórico'); bx.onclick = () => apagarHist([x]); r.appendChild(bx);
   }
   V.appendChild(card);
 }
@@ -988,7 +1057,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(); 
 document.querySelectorAll('#abas button').forEach((b) => b.addEventListener('click', () => { aba = b.dataset.a; ls.set('desp-aba2', aba); if (aba === 'hist') puxar(); render(); window.scrollTo(0, 0); }));
 $('busca').addEventListener('input', desenharEstoque);
 $('eu').onclick = () => abrir('fSair');
-$('btSairSim').onclick = () => { ls.del('desp-sessao'); EU = ''; K = ''; TOK = ''; rem = {}; histRem = []; menuMeu = {}; menuRem = {}; fechar(); mostrarEntrada(); };
+$('btSairSim').onclick = () => { ls.del('desp-sessao'); EU = ''; K = ''; TOK = ''; rem = {}; histRem = []; menuMeu = {}; menuRem = {}; apMeu = []; apRem = []; fechar(); mostrarEntrada(); };
 
 
 // ===== cardápio
@@ -1251,6 +1320,15 @@ $('formSenha').onsubmit = async (e) => {
     COFRE = cofre; ls.set('desp-cofre', JSON.stringify(cofre)); fechar(); toast('Senha ' + (senhaDe === EU ? 'sua' : 'do ' + GENTE[senhaDe].nome) + ' trocada!');
   } catch (x) { er.textContent = 'Não consegui salvar agora. Confira a internet e tente de novo.'; }
   finally { bt.disabled = false; bt.textContent = 'Salvar senha nova'; }
+};
+
+// ===== começar o estoque do zero: tudo vira "não tem" (sem "acabou")
+$('btZerar').onclick = () => {
+  const alvo = todos(true).filter((x) => x.q > 0 || x.a || x.q === 0); if (!alvo.length) { toast('O estoque já está zerado'); return; }
+  const antMeu = JSON.parse(JSON.stringify(meu)), antLog = log.length, t = Date.now();
+  for (const x of alvo) { const a1 = meu[x.id], a2 = rem[x.id], raw = (a1 && (!a2 || a1.t >= a2.t)) ? a1 : (a2 || {}); const { por: _p, t: _t, ...b0 } = raw; meu[x.id] = { ...b0, q: null, a: 0, b: x.b, x: x.x, t, ...(CATI[x.id] ? {} : { n: x.n, c: x.c }) }; }
+  log.push({ i: '', k: 'zerou', t, n: '' }); salvarMeu(); render(); enviarDepois();
+  toast('Estoque começou do zero', () => { meu = antMeu; log.length = Math.min(log.length, antLog); salvarMeu(); render(); enviarDepois(); });
 };
 
 // ===== jeito de aplicativo
